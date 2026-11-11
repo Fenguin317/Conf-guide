@@ -17,5 +17,6 @@
 - `public/base.css`: structural CSS shared by both themes (reset, font stacks, column, safe areas, a11y)
 - `public/app.js`: content fetch, theme/lang pick, hash router, renderer (markup contract), `UI` strings, copy
 - `public/theme-g2a.css`: design option A (G2A-style) colours and typography
+- `public/theme-apple.css`: design option B (Apple-style): light/dark tokens, frosted header, inset grouped lists
 - `public/admin/`: admin UI (`index.html`, `admin.js` login + Form/JSON editor + save, `admin.css`)
 - `test/server.test.js`: auth, validator, and HTTP integration tests (`npm test`)

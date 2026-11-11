@@ -24,7 +24,9 @@ function pickLang() {
 let lang = pickLang();
 
 function setTheme(name) {
-  document.getElementById('theme').href = `/theme-${name === 'apple' ? 'apple' : 'g2a'}.css`;
+  const apple = name === 'apple';
+  document.getElementById('theme').href = `/theme-${apple ? 'apple' : 'g2a'}.css`;
+  document.querySelector('meta[name=theme-color]').content = !apple ? '#1a0f0b' : matchMedia('(prefers-color-scheme: dark)').matches ? '#000' : '#f5f5f7';
 }
 if (qs.get('theme')) setTheme(qs.get('theme'));
 
