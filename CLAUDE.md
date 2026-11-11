@@ -4,7 +4,7 @@ Stack: Node 24, zero npm dependencies (node:http, node:crypto, node:test); vanil
 
 ## Commands
 - `npm start` — serve on http://localhost:3061 (PORT env overrides)
-- `npm test` — node --test test/
+- `npm test` — node --test "test/*.test.js"
 - `npm run set-password` — write scrypt hash to data/admin.json (gitignored); or set ADMIN_PASSWORD env
 
 ## Rules
