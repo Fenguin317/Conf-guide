@@ -11,7 +11,7 @@ Status values: `todo` / `doing` / `done (commit)`. Open decisions live in `QUEST
 | 5 | Admin editor UI | – | 2 | done (5001977) |
 | 6 | Theme B apple-design | `/apple-design` | 3 | done (ad6f080) |
 | 7 | QA screenshots | `/browse` | 4,5,6 | done (b22cc75) |
-| 8 | Report + PDF | `/make-pdf` | 7 | doing |
+| 8 | Report + PDF | `/make-pdf` | 7 | done (8b3bfe3) |
 | 9 | Deploy | `/setup-deploy`, `/ship` | Q2 | blocked on QUESTIONS Q2 |
 
 ## Briefs
