@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>가이드 관리자</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="/admin/admin.css">
+<script src="/admin/admin.js" defer></script>
+</head>
+<body>
+<main id="login" class="login" hidden>
+  <form id="login-form" class="login-card">
+    <h1>가이드 관리자</h1>
+    <label for="pw">비밀번호</label>
+    <input id="pw" type="password" autocomplete="current-password" required>
+    <button type="submit" class="primary">로그인</button>
+    <p id="login-error" class="login-error" role="alert"></p>
+  </form>
+</main>
+
+<div id="editor" hidden>
+  <header class="bar">
+    <h1>가이드 관리자 <span id="dirty" class="dot" role="img" aria-label="저장되지 않은 변경 사항" title="저장되지 않은 변경 사항" hidden></span></h1>
+    <div class="tabs" role="tablist">
+      <button type="button" role="tab" id="tab-form" aria-controls="form" aria-selected="true">Form</button>
+      <button type="button" role="tab" id="tab-json" aria-controls="json" aria-selected="false">JSON</button>
+    </div>
+    <div class="actions">
+      <a class="btn" href="/" target="_blank" rel="noopener">미리보기</a>
+      <button type="button" id="save" class="primary">저장</button>
+      <button type="button" id="logout">로그아웃</button>
+    </div>
+  </header>
+
+  <div id="errors" class="errors" role="alert" hidden>
+    <div class="errors-head">
+      <strong>저장 실패: 아래 항목을 고쳐 주세요</strong>
+      <button type="button" id="errors-close">닫기</button>
+    </div>
+    <ul id="errors-list"></ul>
+  </div>
+
+  <main class="content">
+    <section id="form" role="tabpanel" aria-labelledby="tab-form"></section>
+    <section id="json" role="tabpanel" aria-labelledby="tab-json" hidden>
+      <div class="json-tools">
+        <button type="button" id="json-check">검증</button>
+        <span id="json-status" role="status"></span>
+      </div>
+      <textarea id="json-text" spellcheck="false" aria-label="콘텐츠 JSON"></textarea>
+    </section>
+  </main>
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>
