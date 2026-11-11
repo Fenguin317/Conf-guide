@@ -22,40 +22,406 @@
       { "label": { "ko": "오시는 길", "en": "Getting here", "zh": "交通指南" }, "href": "#/directions", "style": "outline" }
     ]
   },
-  "notice": { "title": { "ko": "공지", "en": "Notice", "zh": "公告" }, "body": { "ko": "컨퍼런스 전까지 계속 업데이트됩니다. 일행분들께도 링크를 공유해 주세요.", "en": "This guide is updated until the conference. Please share the link with your group.", "zh": "本指南将持续更新至大会开始。请与同行者分享链接。" } },
+  "notice": {
+    "title": { "ko": "공지", "en": "Notice", "zh": "公告" },
+    "body": {
+      "ko": "더욱 풍성히 누리는 컨퍼런스가 되시기를 바라며 준비했습니다!\n안내사항은 컨퍼런스 전까지 계속 업데이트될 예정입니다. 함께 오시는 일행분들께도 꼭 이 링크를 공유해 주세요.",
+      "en": "We prepared this guide so you can get the most out of the conference!\nIt will keep being updated until the conference begins. Please be sure to share this link with everyone coming with you.",
+      "zh": "我们精心准备了这份指南，愿您在大会中收获更加丰盛！\n本指南将持续更新至大会开始。请务必把链接分享给同行的伙伴。"
+    }
+  },
   "quick": [
     { "page": "schedule", "icon": "🗓️" },
     { "page": "directions", "icon": "🚗" },
-    { "page": "faq", "icon": "❓" },
-    { "page": "lineup", "icon": "🎤" }
+    { "page": "food", "icon": "🍽️" },
+    { "page": "faq", "icon": "❓" }
   ],
-  "remember": { "title": { "ko": "꼭 기억하세요", "en": "Remember", "zh": "请记住" }, "items": [
-    { "ko": "입장 시 QR 코드를 준비해 주세요.", "en": "Have your QR code ready at entry.", "zh": "入场时请准备好二维码。" }
-  ] },
+  "remember": {
+    "title": { "ko": "꼭 기억하세요", "en": "Remember", "zh": "请记住" },
+    "items": [
+      { "ko": "메인홀 입장 시 해당 DAY에 맞는 팔찌를 착용해 주세요.", "en": "Wear the wristband for that day when entering the main hall.", "zh": "进入主会场时，请佩戴当天对应的手环。" },
+      { "ko": "식사 후 재입장 시에는 기존 좌석이 아닌 새로운 입장 순서대로 앉습니다.", "en": "When you re-enter after a meal break, seating goes by the new order of entry, not your previous seat.", "zh": "用餐后重新入场时，按新的入场顺序就座，而非原座位。" },
+      { "ko": "메인홀에는 물병만 반입할 수 있습니다.", "en": "Only water bottles are allowed inside the main hall.", "zh": "主会场内仅可携带饮用水。" },
+      { "ko": "개인 상비약과 복용약은 꼭 챙겨 오세요.", "en": "Bring your own basic medicine and any prescriptions you take.", "zh": "请自备常用药及个人服用的药物。" },
+      { "ko": "해외 예배자를 위한 영어·중국어 통역이 준비되어 있습니다.", "en": "English and Chinese interpretation is provided for international worshipers.", "zh": "大会为海外敬拜者提供英语和中文翻译。" }
+    ]
+  },
   "sections": [
-    { "id": "getting-here", "title": { "ko": "오시는 길", "en": "Getting here", "zh": "交通" }, "badge": { "ko": "먼저 확인", "en": "Start here", "zh": "先看这里" }, "pages": ["directions"] },
-    { "id": "main", "title": { "ko": "메인", "en": "Main", "zh": "主要" }, "pages": ["schedule", "lineup", "faq"] }
+    { "id": "start", "title": { "ko": "먼저 확인하세요", "en": "Before you come", "zh": "出发前必看" }, "badge": { "ko": "먼저 확인", "en": "Start here", "zh": "先看这里" }, "pages": ["schedule", "directions", "faq"] },
+    { "id": "program", "title": { "ko": "컨퍼런스", "en": "Conference", "zh": "大会内容" }, "pages": ["lineup", "registration", "songs"] },
+    { "id": "on-site", "title": { "ko": "현장 안내", "en": "On site", "zh": "现场指南" }, "pages": ["food", "booths", "merch", "ads"] },
+    { "id": "together", "title": { "ko": "함께 지켜요", "en": "Etiquette & safety", "zh": "共同遵守" }, "pages": ["etiquette", "safety"] },
+    { "id": "support", "title": { "ko": "후원", "en": "Support", "zh": "支持事工" }, "pages": ["support"] }
   ],
   "pages": {
-    "directions": { "icon": "🚗", "eyebrow": { "ko": "오시는 길", "en": "Getting here", "zh": "交通" }, "title": { "ko": "오시는 길 & 주차", "en": "Directions & Parking", "zh": "交通与停车" }, "subtitle": { "ko": "킨텍스 제2전시장 9홀", "en": "KINTEX Hall 2, Hall 9", "zh": "KINTEX 第二展馆 9号厅" }, "blocks": [
-      { "type": "info", "title": { "ko": "주소", "en": "Address", "zh": "地址" }, "body": { "ko": "경기도 고양시 일산서구 킨텍스로 217-59", "en": "217-59 Kintex-ro, Ilsanseo-gu, Goyang-si, Gyeonggi-do", "zh": "京畿道高阳市一山西区KINTEX路217-59" } },
-      { "type": "copy", "label": { "ko": "주소 복사", "en": "Copy address", "zh": "复制地址" }, "value": "경기도 고양시 일산서구 킨텍스로 217-59" }
-    ] },
-    "schedule": { "icon": "🗓️", "eyebrow": { "ko": "메인", "en": "Main", "zh": "主要" }, "title": { "ko": "스케줄표", "en": "Schedule", "zh": "日程表" }, "subtitle": { "ko": "3일간의 일정", "en": "Three days at a glance", "zh": "三天日程一览" }, "blocks": [
-      { "type": "table", "head": [ { "ko": "시간", "en": "Time", "zh": "时间" }, { "ko": "프로그램", "en": "Program", "zh": "节目" } ], "rows": [
-        [ { "ko": "10:00", "en": "10:00", "zh": "10:00" }, { "ko": "등록", "en": "Registration", "zh": "报到" } ]
-      ] }
-    ] },
-    "lineup": { "icon": "🎤", "eyebrow": { "ko": "메인", "en": "Main", "zh": "主要" }, "title": { "ko": "라인업", "en": "Line-up", "zh": "讲员与敬拜团" }, "subtitle": { "ko": "", "en": "", "zh": "" }, "blocks": [
-      { "type": "people", "items": [ { "name": { "ko": "존 비비어", "en": "John Bevere", "zh": "约翰·毕维尔" }, "role": { "ko": "주강사", "en": "Speaker", "zh": "讲员" } } ] }
-    ] },
-    "faq": { "icon": "❓", "eyebrow": { "ko": "메인", "en": "Main", "zh": "主要" }, "title": { "ko": "자주 하는 질문", "en": "FAQ", "zh": "常见问题" }, "subtitle": { "ko": "", "en": "", "zh": "" }, "blocks": [
-      { "type": "accordion", "items": [ { "q": { "ko": "주차가 가능한가요?", "en": "Is parking available?", "zh": "可以停车吗？" }, "a": { "ko": "킨텍스 주차장을 이용할 수 있습니다.", "en": "Yes, use the KINTEX parking lots.", "zh": "可以使用KINTEX停车场。" } } ] }
-    ] }
+    "schedule": {
+      "icon": "🗓️",
+      "eyebrow": { "ko": "먼저 확인하세요", "en": "Before you come", "zh": "出发前必看" },
+      "title": { "ko": "스케줄표", "en": "Schedule", "zh": "日程表" },
+      "subtitle": { "ko": "2027. 01. 26 (화) – 01. 28 (목)", "en": "Jan 26 (Tue) – Jan 28 (Thu), 2027", "zh": "2027年1月26日（周二）– 1月28日（周四）" },
+      "cover": "/assets/notion/schedule-1.jpg",
+      "blocks": [
+        { "type": "heading", "text": { "ko": "📍 상세 스케줄", "en": "📍 Detailed schedule", "zh": "📍 详细日程" } },
+        { "type": "heading", "text": { "ko": "DAY 1 · 1/26 (화)", "en": "DAY 1 · Tue, Jan 26", "zh": "DAY 1 · 1月26日（周二）" } },
+        { "type": "table",
+          "head": [ { "ko": "시간", "en": "Time", "zh": "时间" }, { "ko": "프로그램", "en": "Program", "zh": "内容" } ],
+          "rows": [
+            [ { "ko": "14:00–15:00", "en": "14:00–15:00", "zh": "14:00–15:00" }, { "ko": "WORSHIP #1", "en": "Worship #1", "zh": "敬拜 #1" } ],
+            [ { "ko": "15:00–17:00", "en": "15:00–17:00", "zh": "15:00–17:00" }, { "ko": "BIBLE STUDY #1", "en": "Bible Study #1", "zh": "查经 #1" } ],
+            [ { "ko": "17:00–19:30", "en": "17:00–19:30", "zh": "17:00–19:30" }, { "ko": "저녁식사", "en": "Dinner", "zh": "晚餐" } ],
+            [ { "ko": "19:30–22:00", "en": "19:30–22:00", "zh": "19:30–22:00" }, { "ko": "WORSHIP #2", "en": "Worship #2", "zh": "敬拜 #2" } ]
+          ] },
+        { "type": "heading", "text": { "ko": "DAY 2 · 1/27 (수)", "en": "DAY 2 · Wed, Jan 27", "zh": "DAY 2 · 1月27日（周三）" } },
+        { "type": "table",
+          "head": [ { "ko": "시간", "en": "Time", "zh": "时间" }, { "ko": "프로그램", "en": "Program", "zh": "内容" } ],
+          "rows": [
+            [ { "ko": "10:00–12:00", "en": "10:00–12:00", "zh": "10:00–12:00" }, { "ko": "WORSHIP #3", "en": "Worship #3", "zh": "敬拜 #3" } ],
+            [ { "ko": "12:00–14:00", "en": "12:00–14:00", "zh": "12:00–14:00" }, { "ko": "점심식사", "en": "Lunch", "zh": "午餐" } ],
+            [ { "ko": "14:00–15:30", "en": "14:00–15:30", "zh": "14:00–15:30" }, { "ko": "BIBLE STUDY #2", "en": "Bible Study #2", "zh": "查经 #2" } ],
+            [ { "ko": "15:30–17:30", "en": "15:30–17:30", "zh": "15:30–17:30" }, { "ko": "SESSION #1", "en": "Session #1", "zh": "专题聚会 #1" } ],
+            [ { "ko": "17:30–19:30", "en": "17:30–19:30", "zh": "17:30–19:30" }, { "ko": "저녁식사", "en": "Dinner", "zh": "晚餐" } ],
+            [ { "ko": "19:30–22:00", "en": "19:30–22:00", "zh": "19:30–22:00" }, { "ko": "WORSHIP #4", "en": "Worship #4", "zh": "敬拜 #4" } ]
+          ] },
+        { "type": "heading", "text": { "ko": "DAY 3 · 1/28 (목)", "en": "DAY 3 · Thu, Jan 28", "zh": "DAY 3 · 1月28日（周四）" } },
+        { "type": "table",
+          "head": [ { "ko": "시간", "en": "Time", "zh": "时间" }, { "ko": "프로그램", "en": "Program", "zh": "内容" } ],
+          "rows": [
+            [ { "ko": "10:00–12:00", "en": "10:00–12:00", "zh": "10:00–12:00" }, { "ko": "WORSHIP #5", "en": "Worship #5", "zh": "敬拜 #5" } ],
+            [ { "ko": "12:00–14:00", "en": "12:00–14:00", "zh": "12:00–14:00" }, { "ko": "점심식사", "en": "Lunch", "zh": "午餐" } ],
+            [ { "ko": "14:00–15:30", "en": "14:00–15:30", "zh": "14:00–15:30" }, { "ko": "BIBLE STUDY #3", "en": "Bible Study #3", "zh": "查经 #3" } ],
+            [ { "ko": "15:30–17:00", "en": "15:30–17:00", "zh": "15:30–17:00" }, { "ko": "SESSION #2", "en": "Session #2", "zh": "专题聚会 #2" } ],
+            [ { "ko": "17:00–17:30", "en": "17:00–17:30", "zh": "17:00–17:30" }, { "ko": "THE TABLE", "en": "The Table", "zh": "The Table" } ],
+            [ { "ko": "17:30–19:30", "en": "17:30–19:30", "zh": "17:30–19:30" }, { "ko": "저녁식사", "en": "Dinner", "zh": "晚餐" } ],
+            [ { "ko": "19:30–22:00", "en": "19:30–22:00", "zh": "19:30–22:00" }, { "ko": "WORSHIP #6", "en": "Worship #6", "zh": "敬拜 #6" } ]
+          ] },
+        { "type": "info", "body": { "ko": "본 컨퍼런스는 해외 예배자들을 위한 **영어, 중국어 통역**이 준비되어 있습니다.", "en": "**English and Chinese interpretation** is provided for international worshipers.", "zh": "本次大会为海外敬拜者提供**英语和中文翻译**。" } },
+        { "type": "info", "body": { "ko": "📢 세션이 마치고 식사를 위해 퇴장한 뒤 재입장할 때는 **기존 좌석이 아닌 새로운 입장 순서대로** 앉으실 수 있습니다!", "en": "📢 If you leave for a meal after a session, when you come back in you'll be seated **by the new order of entry, not in your previous seat**.", "zh": "📢 聚会结束后离场用餐、再次入场时，将**按新的入场顺序就座，而非原来的座位**。" } },
+        { "type": "heading", "text": { "ko": "📖 Day별 본문 말씀", "en": "📖 Scripture for each day", "zh": "📖 每日经文" } },
+        { "type": "info",
+          "title": { "ko": "Day 1. 나의 삶을 통한 하나님께 영광", "en": "Day 1. Glory to God Through My Life", "zh": "Day 1. 借着我的生命荣耀神" },
+          "body": {
+            "ko": "**로마서 12:1**\n너희 몸을 하나님이 기뻐하시는 거룩한 산 제물로 드리라 이는 너희가 드릴 영적 예배니라",
+            "en": "**Romans 12:1**\nPresent your bodies as a living sacrifice, holy and acceptable to God, which is your spiritual worship.",
+            "zh": "**罗马书 12:1**\n将身体献上，当作活祭，是圣洁的，是神所喜悦的；你们如此事奉乃是理所当然的。"
+          } },
+        { "type": "info",
+          "title": { "ko": "Day 2. 교회를 통한 하나님께 영광", "en": "Day 2. Glory to God Through the Church", "zh": "Day 2. 借着教会荣耀神" },
+          "body": {
+            "ko": "**에베소서 3:21**\n교회 안에서와 그리스도 예수 안에서 영광이 대대로 영원무궁하기를 원하노라\n\n**요한복음 11:25–26**\n나는 부활이요 생명이니 나를 믿는 자는 죽어도 살겠고, 무릇 살아서 나를 믿는 자는 영원히 죽지 아니하리니 이것을 네가 믿느냐",
+            "en": "**Ephesians 3:21**\nTo him be glory in the church and in Christ Jesus throughout all generations, forever and ever.\n\n**John 11:25–26**\nI am the resurrection and the life. Whoever believes in me, though he die, yet shall he live, and everyone who lives and believes in me shall never die. Do you believe this?",
+            "zh": "**以弗所书 3:21**\n但愿他在教会中，并在基督耶稣里，得着荣耀，直到世世代代，永永远远。\n\n**约翰福音 11:25–26**\n复活在我，生命也在我。信我的人虽然死了，也必复活；凡活着信我的人必永远不死。你信这话吗？"
+          } },
+        { "type": "info",
+          "title": { "ko": "Day 3. 민족을 통한 하나님께 영광", "en": "Day 3. Glory to God Through Our Nation", "zh": "Day 3. 借着民族荣耀神" },
+          "body": {
+            "ko": "**시편 67:3–4**\n하나님이여 민족들이 주를 찬송하게 하시며 모든 민족들이 주를 찬송하게 하소서 온 나라가 주를 기뻐하며 즐겁게 노래하리니",
+            "en": "**Psalm 67:3–4**\nLet the peoples praise you, O God; let all the peoples praise you! Let the nations be glad and sing for joy.",
+            "zh": "**诗篇 67:3–4**\n神啊，愿列邦称赞你，愿万民都称赞你！愿万国都快乐欢呼。"
+          } }
+      ]
+    },
+    "directions": {
+      "icon": "🚗",
+      "eyebrow": { "ko": "먼저 확인하세요", "en": "Before you come", "zh": "出发前必看" },
+      "title": { "ko": "오시는 길 & 주차", "en": "Directions & Parking", "zh": "交通与停车" },
+      "subtitle": { "ko": "킨텍스 제2전시장 9홀", "en": "KINTEX Exhibition Center 2, Hall 9", "zh": "KINTEX 第二展馆 9号厅" },
+      "cover": "/assets/notion/directions-1.jpg",
+      "blocks": [
+        { "type": "heading", "text": { "ko": "📍 지도", "en": "📍 Map", "zh": "📍 地图" } },
+        { "type": "image", "src": "/assets/notion/directions-2.jpg", "alt": { "ko": "킨텍스 제2전시장 위치 지도", "en": "Map showing KINTEX Exhibition Center 2", "zh": "KINTEX 第二展馆位置地图" } },
+        { "type": "copy", "label": { "ko": "주소", "en": "Address", "zh": "地址" }, "value": "경기도 고양시 일산서구 킨텍스로 217-59" },
+        { "type": "links", "items": [
+          { "label": { "ko": "⛪ 킨텍스 제2전시장 – 네이버 지도", "en": "⛪ KINTEX Exhibition Center 2 – Naver Map", "zh": "⛪ KINTEX 第二展馆 – Naver 地图" }, "href": "https://naver.me/FHlgGx5e" }
+        ] },
+        { "type": "heading", "text": { "ko": "🚏 대중교통 안내", "en": "🚏 Public transport", "zh": "🚏 公共交通" } },
+        { "type": "list", "items": [
+          { "ko": "버스 🚌 : 한국건설기술연구원·킨텍스 정류장 / 킨텍스2전시장 정류장 / 힐스테이트일산 정류장", "en": "Bus 🚌 : KICT·KINTEX stop (한국건설기술연구원·킨텍스) / KINTEX Exhibition Center 2 stop (킨텍스2전시장) / Hillstate Ilsan stop (힐스테이트일산)", "zh": "公交 🚌：韩国建设技术研究院·KINTEX站（한국건설기술연구원·킨텍스）/ KINTEX第二展馆站（킨텍스2전시장）/ Hillstate一山站（힐스테이트일산）" },
+          { "ko": "지하철 🚈 : GTX-A 킨텍스역", "en": "Subway 🚈 : GTX-A KINTEX Station (킨텍스역)", "zh": "地铁 🚈：GTX-A KINTEX站（킨텍스역）" }
+        ] },
+        { "type": "heading", "text": { "ko": "🚙 주차 안내", "en": "🚙 Parking", "zh": "🚙 停车指南" } },
+        { "type": "info", "body": { "ko": "📢 킨텍스 주차장이 만차일 때 이용하실 수 있는 근처 주차장 안내입니다 🙌🏻\n아래 링크를 누르시면 지도에서 주차장 목록을 확인하실 수 있습니다 :)", "en": "📢 Here are nearby parking lots you can use if the KINTEX lots are full 🙌🏻\nTap the link below to see the list on the map :)", "zh": "📢 以下是KINTEX停车场满位时可使用的附近停车场 🙌🏻\n点击下方链接即可在地图上查看停车场列表 :)" } },
+        { "type": "image", "src": "/assets/notion/directions-3.jpg", "alt": { "ko": "킨텍스 제2전시장 반경 약 780m 내 주차장 지도", "en": "Map of parking lots within about 780 m of KINTEX Exhibition Center 2", "zh": "KINTEX 第二展馆周边约780米内停车场地图" }, "caption": { "ko": "킨텍스 제2전시장 지하주차장, 킨텍스 공용주차장, 스타필드마켓 일산점, 킨텍스원시티 주차장 등", "en": "Includes KINTEX Exhibition Center 2 underground parking, KINTEX public parking, Starfield Market Ilsan and KINTEX One City parking", "zh": "包括KINTEX第二展馆地下停车场、KINTEX公共停车场、Starfield Market一山店、KINTEX One City停车场等" } },
+        { "type": "links", "items": [
+          { "label": { "ko": "근처 주차장 목록 – 네이버 지도", "en": "Nearby parking lots – Naver Map", "zh": "附近停车场列表 – Naver 地图" }, "href": "https://naver.me/58qdAlkO" }
+        ] },
+        { "type": "info", "title": { "ko": "💡 Tip!", "en": "💡 Tip!", "zh": "💡 小贴士" }, "body": { "ko": "**‘모두의주차장’** 같은 주차장 검색 앱을 이용하시면 주변 주차장을 더 편하게 찾으실 수 있습니다.", "en": "Parking apps such as **Modu's Parking (모두의주차장)** make it easier to find a spot nearby.", "zh": "使用 **“모두의주차장”（Modu's Parking）** 等停车场搜索App，可以更方便地找到附近的停车场。" } }
+      ]
+    },
+    "faq": {
+      "icon": "❓",
+      "eyebrow": { "ko": "먼저 확인하세요", "en": "Before you come", "zh": "出发前必看" },
+      "title": { "ko": "자주 하는 질문", "en": "FAQ", "zh": "常见问题" },
+      "subtitle": { "ko": "컨퍼런스 신청 관련 안내", "en": "About registration", "zh": "报名相关问题" },
+      "cover": "/assets/notion/faq-1.jpg",
+      "blocks": [
+        { "type": "text", "body": { "ko": "2027 아이자야씩스티원 컨퍼런스 신청과 관련하여 자주 묻는 질문을 안내드립니다 :)", "en": "Here are answers to the questions we hear most about registering for the 2027 Isaiah6tyOne Conference :)", "zh": "以下是关于2027 Isaiah6tyOne大会报名的常见问题 :)" } },
+        { "type": "accordion", "items": [
+          {
+            "q": { "ko": "1. 얼리버드 티켓의 환불 및 변경이 가능한가요?", "en": "1. Can I get a refund or make changes to an early-bird ticket?", "zh": "1. 早鸟票可以退票或更改吗？" },
+            "a": {
+              "ko": "얼리버드 티켓은 티켓 특성상 환불 및 변경이 불가하며, **다른 분에게 양도만 가능**합니다.\n티켓 양도를 희망하시는 경우 아래 정보를 아이자야씩스티원 컨퍼런스 카카오톡 채널로 보내주시면 확인 후 양도 처리를 도와드리겠습니다.\n\n• **양도하시는 분의 성함 및 연락처**\n• **양도받으시는 분의 성함, 연락처, 출석 교회 및 교단**\n\n※ 양도 처리가 완료되기 전까지 기존 신청 정보가 유지됩니다. 반드시 카카오톡 채널을 통해 양도 처리 완료 여부를 확인해 주세요.",
+              "en": "Early-bird tickets can't be refunded or changed, **but they can be transferred to someone else**.\nTo transfer your ticket, send the details below to the Isaiah6tyOne Conference Kakao channel and we'll take care of it once we've checked them.\n\n• **Your name and phone number**\n• **The new holder's name, phone number, home church and denomination**\n\n※ Your original registration stays in place until the transfer is complete. Please confirm on the Kakao channel that the transfer has gone through.",
+              "zh": "早鸟票因其性质无法退票或更改，**只能转让给他人**。\n如需转让，请将以下信息发送至Isaiah6tyOne大会KakaoTalk频道，我们确认后会为您办理转让。\n\n• **转让人的姓名和联系方式**\n• **受让人的姓名、联系方式、所属教会及宗派**\n\n※ 转让办理完成之前，原报名信息保持不变。请务必通过KakaoTalk频道确认转让是否完成。"
+            }
+          },
+          {
+            "q": { "ko": "2. 좌석 구역 선택은 언제 진행하나요?", "en": "2. When do we choose our seating zone?", "zh": "2. 什么时候选择座位区域？" },
+            "a": {
+              "ko": "좌석 구역 선택에 관한 자세한 안내는 **11월 중 신청자분들께 개별적으로 연락**드릴 예정입니다.\n구역 선택 안내는 **신청 기간에 따라 순차적으로 진행됩니다.**",
+              "en": "We'll **contact each registrant individually in November** with details on choosing a seating zone.\nZone selection will **open in turn, based on when you registered.**",
+              "zh": "关于选择座位区域的详细说明，我们将**于11月内个别联系报名者**。\n区域选择将**按报名时段依次进行。**"
+            }
+          },
+          {
+            "q": { "ko": "3. 신청 정보를 변경하고 싶어요.", "en": "3. I need to change my registration details.", "zh": "3. 我想修改报名信息。" },
+            "a": {
+              "ko": "원활한 안내를 위해 신청 시 이메일 주소와 연락처를 정확하게 기재 부탁드립니다.\n이메일, 연락처 또는 기타 신청 정보의 변경이 필요한 경우에는 이벤터스 문의 또는 카카오톡 채널을 통해 변경할 내용을 남겨주시기 바랍니다.\n\n※ 신청 확정 이메일을 받지 못하신 경우 스팸메일함과 신청 시 작성한 이메일 주소를 먼저 확인 부탁드립니다 :)",
+              "en": "Please enter your email address and phone number accurately when you register so we can keep you updated.\nIf you need to change your email, phone number or any other details, send us the changes through an Event-us (이벤터스) inquiry or our Kakao channel.\n\n※ Didn't get a confirmation email? First check your spam folder and the email address you entered when registering :)",
+              "zh": "为便于通知，请在报名时准确填写电子邮箱和联系方式。\n如需修改邮箱、联系方式或其他报名信息，请通过Event-us（이벤터스）咨询或KakaoTalk频道留言告知需修改的内容。\n\n※ 如未收到报名确认邮件，请先检查垃圾邮件箱以及报名时填写的邮箱地址 :)"
+            }
+          },
+          {
+            "q": { "ko": "4. 연령별 티켓 할인 기준이 어떻게 되나요?", "en": "4. How do age-based ticket discounts work?", "zh": "4. 按年龄的门票优惠标准是什么？" },
+            "a": {
+              "ko": "연령은 행사 당일 기준으로 아래와 같이 적용됩니다.\n\n• 48개월 미만 : 무료입장 / 좌석 미제공\n• 48개월 이상 ~ 초등학교 입학 전 : 티켓 금액 50% 할인 / 좌석 제공\n• 초등학교 1학년 이상 : 일반 티켓 가격 적용 / 좌석 제공\n\n※ 48개월 미만 영유아도 별도 좌석을 원하실 경우, ‘유아 티켓(50% 할인)’을 구매해 주시기 바랍니다.\n※ 티켓 구매를 희망하시는 경우 문의를 남겨주시면 구매하실 수 있는 링크를 안내해 드리겠습니다.",
+              "en": "Age is counted as of the event date:\n\n• Under 48 months: free entry / no seat\n• 48 months up to starting elementary school: 50% off / seat included\n• Elementary grade 1 and older: regular price / seat included\n\n※ If you'd like a seat for a child under 48 months, please buy a 'child ticket (50% off)'.\n※ To buy a ticket, send us a message and we'll share the purchase link.",
+              "zh": "年龄以活动当天为准，标准如下：\n\n• 未满48个月：免费入场 / 不提供座位\n• 48个月以上至上小学前：门票五折 / 提供座位\n• 小学一年级及以上：按正常票价 / 提供座位\n\n※ 未满48个月的婴幼儿如需单独座位，请购买“幼儿票（五折）”。\n※ 如需购票，请留言咨询，我们会发送购票链接给您。"
+            }
+          }
+        ] },
+        { "type": "links", "items": [
+          { "label": { "ko": "문의 | 카카오톡 채널 @아이자야씩스티원 컨퍼런스", "en": "Questions? Kakao channel @아이자야씩스티원 컨퍼런스", "zh": "咨询 | KakaoTalk频道 @아이자야씩스티원 컨퍼런스" }, "href": "https://pf.kakao.com/_ViePG" }
+        ] }
+      ]
+    },
+    "lineup": {
+      "icon": "🎤",
+      "eyebrow": { "ko": "컨퍼런스", "en": "Conference", "zh": "大会内容" },
+      "title": { "ko": "라인업", "en": "Line-up", "zh": "讲员与敬拜团" },
+      "subtitle": { "ko": "강사 · 예배팀 · 스페셜 게스트", "en": "Speakers · Worship teams · Special guests", "zh": "讲员 · 敬拜团 · 特邀嘉宾" },
+      "cover": "/assets/notion/lineup-1.jpg",
+      "blocks": [
+        { "type": "heading", "text": { "ko": "SPEAKERS", "en": "Speakers", "zh": "讲员" } },
+        { "type": "people", "items": [
+          { "name": { "ko": "존 비비어 목사", "en": "Ps. John Bevere", "zh": "约翰·毕维尔 牧师" }, "role": { "ko": "메신저 인터내셔널", "en": "Messenger International", "zh": "Messenger International" }, "photo": "/assets/notion/lineup-2.jpg" },
+          { "name": { "ko": "리사 비비어 목사", "en": "Ps. Lisa Bevere", "zh": "丽莎·毕维尔 牧师" }, "role": { "ko": "메신저 인터내셔널", "en": "Messenger International", "zh": "Messenger International" }, "photo": "/assets/notion/lineup-3.jpg" },
+          { "name": { "ko": "박반석 목사", "en": "Ps. Ban-seok Park", "zh": "朴磐石 牧师" }, "role": { "ko": "서울은혜채플", "en": "Grace Chapel Seoul", "zh": "首尔恩典教会" }, "photo": "/assets/notion/lineup-4.jpg" },
+          { "name": { "ko": "조성민 간사", "en": "Sungmin Cho", "zh": "赵成民 干事" }, "role": { "ko": "아이자야씩스티원 대표간사", "en": "Lead Director, Isaiah6tyOne", "zh": "Isaiah6tyOne 代表干事" }, "photo": "/assets/notion/lineup-5.jpg" }
+        ] },
+        { "type": "accordion", "items": [
+          {
+            "q": { "ko": "존 비비어 목사 Ps. JOHN BEVERE", "en": "Ps. John Bevere", "zh": "约翰·毕维尔 牧师" },
+            "a": {
+              "ko": "그리스도인의 영적 성장을 촉구하는 베스트셀러 작가이자 뛰어난 설교자다.\n\n20종이 넘는 책을 펴냈으며, 그의 책들은 전 세계 129개 언어로 번역되어 수백만 부가 판매되었다.\n\n특유의 예리한 통찰력과 단호하지만 애정 어린 어조로 그리스도인들을 향해 열정적으로 메시지를 전하며, 하나님의 진리 안에서 진정한 자유를 누리고 순종과 사랑의 사람으로 오늘을 살아가도록 담대히 도전을 준다.",
+              "en": "A best-selling author and gifted preacher who calls Christians to grow spiritually.\n\nHe has written more than 20 books, translated into 129 languages and sold in the millions worldwide.\n\nWith sharp insight and a tone that is firm yet full of love, he speaks passionately to believers, boldly challenging them to walk in the true freedom of God's truth and to live today as people of obedience and love.",
+              "zh": "畅销书作家、杰出的讲道者，呼召基督徒在灵命上成长。\n\n著有二十余本书，已被译成129种语言，全球销量达数百万册。\n\n他以独到敏锐的洞察力和坚定而饱含爱的语气热情传讲信息，勇敢地挑战信徒在神的真理中享受真正的自由，作顺服与爱的人，活出今天。"
+            }
+          },
+          {
+            "q": { "ko": "리사 비비어 목사 Ps. LISA BEVERE", "en": "Ps. Lisa Bevere", "zh": "丽莎·毕维尔 牧师" },
+            "a": {
+              "ko": "여성들의 정체성과 자존감 회복을 촉구하는 베스트셀러 작가이자 열정적인 사역자다.\n\n남편 존 비비어와 함께 메신저 인터내셔널을 공동 설립해 30여 년간 사역해오고 있으며, 《WITHOUT RIVAL》, 《리사 비비어의 자존감》 등 다수의 저서가 전 세계 독자들에게 읽히고 있다.\n\n특유의 솔직하고 담대한 어조로, 때로는 유쾌하게 때로는 진지하게 하나님의 말씀을 삶의 언어로 풀어내며, 세상의 기준과 비교 속에서 흔들리는 이들을 향해 하나님이 지으신 모습 그대로 각자에게 주어진 소명을 담대히 붙잡고 살아가도록 도전을 준다.",
+              "en": "A best-selling author and passionate minister who calls women to rediscover their identity and worth.\n\nShe and her husband John Bevere co-founded Messenger International and have ministered together for over 30 years. Her many books, including Without Rival, are read by people around the world.\n\nCandid and bold, sometimes playful and sometimes serious, she puts God's Word into the language of everyday life. She challenges those shaken by the world's standards and constant comparison to boldly take hold of their own calling, just as God made them.",
+              "zh": "畅销书作家、满有热情的事工者，呼召女性恢复身份认同与自我价值。\n\n她与丈夫约翰·毕维尔共同创立Messenger International，至今已同工三十余年，著有《Without Rival》等多部作品，深受世界各地读者喜爱。\n\n她以坦率而勇敢的语气，时而风趣、时而严肃地把神的话语化为生活的语言，挑战那些在世俗标准与比较中动摇的人，按着神所造的样式，勇敢持守各自的呼召而活。"
+            }
+          },
+          {
+            "q": { "ko": "박반석 목사 [서울은혜채플]", "en": "Ps. Ban-seok Park (Grace Chapel Seoul)", "zh": "朴磐石 牧师（首尔恩典教会）" },
+            "a": {
+              "ko": "미국 Grace Community Church와 Grace Community Chapel of New Jersey를 담임하며 1.5세와 2세를 대상으로 한국어 목회와 영어 목회를 함께 감당해왔다.\n\n제자 양육과 교회 개척의 비전 아래 두 회중을 하나로 세워, 10대부터 40대에 이르는 세대를 향해 헌신자들을 배출하고 청년 교회를 지속적으로 개척해왔으며, 현재는 한국으로 사역지를 옮겨 서울은혜채플을 담임하고 있다.\n\n2세 청년들이 마주하는 고민과 갈등, 특유의 정체성 이슈들을 누구보다 깊이 이해하고 있는 목회자로, 그의 감동적이고 강력한 메시지는 많은 청년들이 주님 중심의 삶을 살기로 결단하게 만든다.",
+              "en": "As senior pastor of Grace Community Church and Grace Community Chapel of New Jersey in the U.S., he led both Korean- and English-language ministries for 1.5- and second-generation Korean Americans.\n\nWith a vision for discipleship and church planting, he brought the two congregations together as one, raised up committed disciples from their teens to their forties, and kept planting young adult churches. He has since moved his ministry to Korea, where he now pastors Grace Chapel Seoul.\n\nFew understand the questions, struggles and identity issues of second-generation young adults as deeply as he does, and his moving, powerful messages have led many young people to commit to Christ-centered lives.",
+              "zh": "曾在美国牧养Grace Community Church与Grace Community Chapel of New Jersey，同时承担面向1.5代与第二代韩裔的韩语和英语牧养事工。\n\n他怀着门徒培育与植堂的异象，将两个会众合而为一，在十几岁到四十多岁的各个世代中培养委身者，并持续开拓青年教会。现已将事工转移到韩国，担任首尔恩典教会的主任牧师。\n\n他深刻理解第二代青年所面对的困惑、挣扎和独特的身份认同问题，他感人而有力的信息带领许多青年决志过以主为中心的生活。"
+            }
+          },
+          {
+            "q": { "ko": "조성민 간사 [아이자야씩스티원]", "en": "Sungmin Cho (Isaiah6tyOne)", "zh": "赵成民 干事（Isaiah6tyOne）" },
+            "a": {
+              "ko": "선교적 예배 공동체 아이자야씩스티원(Isaiah6tyOne)의 워십리더이자 대표간사이다. 공동체의 비전과 사역 전반을 이끌며, 예배를 통해 교회와 다음 세대를 새롭게 하는 일에 힘쓰고 있다.\n\n미드웨스턴 침례신학대학원과 월드미션대학교에서 예배학 겸임교수로 재직하며 예배자와 사역자들을 가르치고 있다. 현재 월드미션대학교 예배학 박사과정에 재학하며 예배에 대한 신학적 연구를 이어가는 동시에, 그 배움이 실제 예배와 목회 선교 현장에 연결되도록 섬기고 있다.\n\n이사야 61장 4절 말씀을 따라 무너진 곳을 다시 세우고, 예배를 통해 다음 세대를 회복시키는 선교적 예배 공동체를 세워가고 있다. 예배와 교육, 선교 사역을 통해 하나님을 삶으로 예배하는 예배자와 공동체를 섬길 리더를 양성하며, 다음 세대의 회복과 교회의 연합을 이루는 일에 헌신하고 있다.",
+              "en": "Worship leader and lead director of Isaiah6tyOne, a missional worship community. He guides the community's vision and ministry as a whole, working to renew the church and the next generation through worship.\n\nHe teaches worshipers and ministers as an adjunct professor of worship at Midwestern Baptist Theological Seminary and World Mission University. While pursuing a doctorate in worship at World Mission University, he continues his theological study of worship and works to connect it with real worship, pastoral and mission settings.\n\nFollowing Isaiah 61:4, he is building a missional worship community that rebuilds the ruined places and restores the next generation through worship. Through worship, teaching and missions, he trains worshipers who honor God with their lives and leaders who will serve their communities, and is devoted to the restoration of the next generation and the unity of the church.",
+              "zh": "宣教性敬拜群体Isaiah6tyOne的敬拜带领者兼代表干事。他带领群体的异象与整体事工，致力于借着敬拜更新教会和下一代。\n\n他在中西部浸信会神学院（Midwestern Baptist Theological Seminary）和世界宣教大学（World Mission University）担任敬拜学兼任教授，培养敬拜者与事工者。目前在世界宣教大学攻读敬拜学博士，持续进行敬拜的神学研究，同时致力于将所学连接到实际的敬拜、牧养和宣教现场。\n\n他按照以赛亚书61章4节的话语，建立一个重修荒废之处、借着敬拜恢复下一代的宣教性敬拜群体；通过敬拜、教育和宣教事工，培养以生命敬拜神的敬拜者和服事群体的领袖，委身于下一代的复兴与教会的合一。"
+            }
+          }
+        ] },
+        { "type": "links", "items": [
+          { "label": { "ko": "서울은혜채플 인스타그램", "en": "Grace Chapel Seoul on Instagram", "zh": "首尔恩典教会 Instagram" }, "href": "https://www.instagram.com/gcc.seoul/" },
+          { "label": { "ko": "아이자야씩스티원 홈페이지", "en": "Isaiah6tyOne website", "zh": "Isaiah6tyOne 官网" }, "href": "https://i6tyone.com/" }
+        ] },
+        { "type": "heading", "text": { "ko": "WORSHIP TEAM & SPECIAL GUESTS", "en": "Worship teams & special guests", "zh": "敬拜团与特邀嘉宾" } },
+        { "type": "people", "items": [
+          { "name": { "ko": "아이자야씩스티원", "en": "Isaiah6tyOne", "zh": "Isaiah6tyOne" }, "role": { "ko": "예배팀", "en": "Worship team", "zh": "敬拜团" }, "photo": "/assets/notion/lineup-6.jpg" },
+          { "name": { "ko": "제이어스", "en": "J-US", "zh": "J-US" }, "role": { "ko": "예배팀", "en": "Worship team", "zh": "敬拜团" }, "photo": "/assets/notion/lineup-7.jpg" },
+          { "name": { "ko": "예수전도단 화요모임", "en": "YWAM Korea Tuesday Worship", "zh": "YWAM 青年使命团 周二聚会" }, "role": { "ko": "예배팀", "en": "Worship team", "zh": "敬拜团" }, "photo": "/assets/notion/lineup-8.jpg" },
+          { "name": { "ko": "나의교회", "en": "My Church (MYC)", "zh": "我的教会（MYC）" }, "role": { "ko": "예배팀", "en": "Worship team", "zh": "敬拜团" }, "photo": "/assets/notion/lineup-9.jpg" },
+          { "name": { "ko": "카르디아", "en": "Kardia", "zh": "Kardia" }, "role": { "ko": "성극단", "en": "Drama company", "zh": "福音剧团" }, "photo": "/assets/notion/lineup-10.jpg" },
+          { "name": { "ko": "케어코너즈", "en": "Carecorners", "zh": "Carecorners" }, "role": { "ko": "미디어 사역", "en": "Media ministry", "zh": "媒体事工" }, "photo": "/assets/notion/lineup-11.jpg" }
+        ] },
+        { "type": "accordion", "items": [
+          { "q": { "ko": "아이자야씩스티원 [Isaiah6tyOne]", "en": "Isaiah6tyOne", "zh": "Isaiah6tyOne" }, "a": { "ko": "황폐한 곳에 예배를 다시 재건하고,\n무너진 곳에 예배를 다시 회복시키며,\n메마른 곳에 예배를 다시 새롭게 합니다.", "en": "We rebuild worship in desolate places,\nrestore worship where it has fallen,\nand renew worship where it has run dry.", "zh": "在荒凉之处重建敬拜，\n在倾颓之处恢复敬拜，\n在干涸之处更新敬拜。" } },
+          { "q": { "ko": "제이어스 [J-US]", "en": "J-US", "zh": "J-US" }, "a": { "ko": "삶의 예배자들을 일으켜 모든 영역에 하나님의 통치가 임하게 합니다.", "en": "Raising up people who worship with their whole lives, so that God's reign comes to every sphere.", "zh": "兴起在生活中敬拜的人，使神的掌权临到各个领域。" } },
+          { "q": { "ko": "예수전도단 화요모임 [YWAM]", "en": "YWAM Korea Tuesday Worship", "zh": "YWAM 青年使命团 周二聚会" }, "a": { "ko": "예수 그리스도께 헌신된 모든 세대들을 일으켜 온 열방에 복음을 효과적으로 전할 수 있도록 훈련시키며, 파송하는 것을 목적으로 합니다.", "en": "Our purpose is to raise up every generation devoted to Jesus Christ, training and sending them to share the gospel effectively with all nations.", "zh": "宗旨是兴起委身于耶稣基督的各个世代，训练并差派他们向万国有效地传扬福音。" } },
+          { "q": { "ko": "나의교회 [MYC]", "en": "My Church (MYC)", "zh": "我的教会（MYC）" }, "a": { "ko": "‘오직 복음’으로 영혼을 살리고, 도시를 살리고, 열방을 살리는 교회입니다.", "en": "A church that brings life to souls, cities and nations through the gospel alone.", "zh": "以“唯独福音”拯救灵魂、复兴城市、祝福万国的教会。" } },
+          { "q": { "ko": "카르디아 [Kardia]", "en": "Kardia", "zh": "Kardia" }, "a": { "ko": "오늘날 청소년들과 청년들과 소통할 수 있는 언어인 문화, 공연 콘텐츠들을 통해 복음을 선포하는 성극단입니다.", "en": "A Christian drama company that proclaims the gospel through culture and performance, the language today's teens and young adults speak.", "zh": "通过文化与演出内容——今天青少年和青年人听得懂的语言——宣扬福音的福音剧团。" } },
+          { "q": { "ko": "케어코너즈 [Carecorners]", "en": "Carecorners", "zh": "Carecorners" }, "a": { "ko": "사람들의 마음이 굳건히 하나님께 향할 수 있도록 격려하는 영상 콘텐츠를 제작하는 미디어 사역 공동체입니다.", "en": "A media ministry community making videos that encourage people to turn their hearts firmly toward God.", "zh": "制作影音内容、鼓励人们的心坚定转向神的媒体事工群体。" } }
+        ] },
+        { "type": "links", "items": [
+          { "label": { "ko": "제이어스 홈페이지", "en": "J-US website", "zh": "J-US 官网" }, "href": "https://jusworship.com/" },
+          { "label": { "ko": "예수전도단 홈페이지", "en": "YWAM Korea website", "zh": "YWAM 韩国官网" }, "href": "http://www.gmk.or.kr/main" },
+          { "label": { "ko": "예수전도단 화요모임 인스타그램", "en": "YWAM Tuesday Worship on Instagram", "zh": "YWAM 周二聚会 Instagram" }, "href": "https://www.instagram.com/ywamworshipkorea/" },
+          { "label": { "ko": "나의교회 인스타그램", "en": "My Church on Instagram", "zh": "我的教会 Instagram" }, "href": "https://www.instagram.com/_mychurch" },
+          { "label": { "ko": "카르디아 홈페이지", "en": "Kardia website", "zh": "Kardia 官网" }, "href": "https://www.kardia.co.kr/" },
+          { "label": { "ko": "케어코너즈 홈페이지", "en": "Carecorners website", "zh": "Carecorners 官网" }, "href": "https://www.carecorners.org/" }
+        ] }
+      ]
+    },
+    "registration": {
+      "icon": "🎟️",
+      "eyebrow": { "ko": "컨퍼런스", "en": "Conference", "zh": "大会内容" },
+      "title": { "ko": "등록 및 입장안내", "en": "Registration & Entry", "zh": "报到与入场" },
+      "subtitle": { "ko": "", "en": "", "zh": "" },
+      "cover": "/assets/notion/registration-1.jpg",
+      "blocks": [
+        { "type": "info", "body": { "ko": "등록 및 입장과 관련된 자세한 사항은 업데이트될 예정입니다 :)", "en": "Details on registration and entry are coming soon :)", "zh": "报到与入场的详细信息即将更新 :)" } }
+      ]
+    },
+    "songs": {
+      "icon": "🎵",
+      "eyebrow": { "ko": "컨퍼런스", "en": "Conference", "zh": "大会内容" },
+      "title": { "ko": "송리스트", "en": "Song List", "zh": "诗歌歌单" },
+      "subtitle": { "ko": "", "en": "", "zh": "" },
+      "cover": "/assets/notion/songs-1.jpg",
+      "blocks": [
+        { "type": "info", "body": { "ko": "컨퍼런스에서 함께 찬양할 송리스트는 업데이트될 예정입니다 :)", "en": "The list of songs we'll worship with at the conference is coming soon :)", "zh": "大会中一同敬拜的诗歌歌单即将更新 :)" } }
+      ]
+    },
+    "food": {
+      "icon": "🍽️",
+      "eyebrow": { "ko": "현장 안내", "en": "On site", "zh": "现场指南" },
+      "title": { "ko": "주변 식당 & 카페", "en": "Nearby Restaurants & Cafés", "zh": "周边餐厅与咖啡馆" },
+      "subtitle": { "ko": "네이버 지도 저장 목록", "en": "Saved lists on Naver Map", "zh": "Naver 地图收藏列表" },
+      "cover": "/assets/notion/food-1.jpg",
+      "blocks": [
+        { "type": "heading", "text": { "ko": "📍 식당 안내", "en": "📍 Restaurants", "zh": "📍 餐厅" } },
+        { "type": "text", "body": { "ko": "📢 누르시면 저장된 식당 목록을 확인하실 수 있습니다 😊", "en": "📢 Tap to see our saved list of restaurants 😊", "zh": "📢 点击即可查看收藏的餐厅列表 😊" } },
+        { "type": "links", "items": [
+          { "label": { "ko": "식당 목록 – 네이버 지도", "en": "Restaurant list – Naver Map", "zh": "餐厅列表 – Naver 地图" }, "href": "https://map.naver.com/p/favorite/sharedPlace/folder/ace3f56074014c9fa7caf65fc47c2902" }
+        ] },
+        { "type": "image", "src": "/assets/notion/food-2.jpg", "alt": { "ko": "킨텍스 주변 식당 위치 지도", "en": "Map of restaurants near KINTEX", "zh": "KINTEX周边餐厅地图" } },
+        { "type": "heading", "text": { "ko": "📍 카페 안내", "en": "📍 Cafés", "zh": "📍 咖啡馆" } },
+        { "type": "text", "body": { "ko": "📢 누르시면 저장된 카페 목록을 확인하실 수 있습니다 😊", "en": "📢 Tap to see our saved list of cafés 😊", "zh": "📢 点击即可查看收藏的咖啡馆列表 😊" } },
+        { "type": "links", "items": [
+          { "label": { "ko": "카페 목록 – 네이버 지도", "en": "Café list – Naver Map", "zh": "咖啡馆列表 – Naver 地图" }, "href": "https://naver.me/xoG4XJi9" }
+        ] },
+        { "type": "image", "src": "/assets/notion/food-3.jpg", "alt": { "ko": "킨텍스 주변 카페 위치 지도", "en": "Map of cafés near KINTEX", "zh": "KINTEX周边咖啡馆地图" } },
+        { "type": "list", "items": [
+          { "ko": "네이버지도 앱을 사용하시면 더욱 편리하게 목록을 확인하실 수 있습니다!", "en": "The lists are easiest to browse in the Naver Map app!", "zh": "使用Naver地图App查看列表会更方便！" },
+          { "ko": "저장된 목록 외에도 주변에 식당과 카페들이 있으니 맛있고 든든한 식사 시간이 되시길 바랍니다 👍🏻", "en": "There are plenty of other restaurants and cafés nearby too. Enjoy a good, hearty meal 👍🏻", "zh": "除收藏列表外，周边还有许多餐厅和咖啡馆，祝您用餐愉快、吃得饱足 👍🏻" }
+        ] }
+      ]
+    },
+    "booths": {
+      "icon": "🏕️",
+      "eyebrow": { "ko": "현장 안내", "en": "On site", "zh": "现场指南" },
+      "title": { "ko": "부스", "en": "Booths", "zh": "展位" },
+      "subtitle": { "ko": "", "en": "", "zh": "" },
+      "cover": "/assets/notion/booths-1.jpg",
+      "blocks": [
+        { "type": "info", "body": { "ko": "컨퍼런스에서 만나보실 수 있는 부스들은 업데이트될 예정입니다 :)", "en": "The booths you can visit at the conference will be announced soon :)", "zh": "大会现场展位信息即将更新 :)" } }
+      ]
+    },
+    "merch": {
+      "icon": "🛍️",
+      "eyebrow": { "ko": "현장 안내", "en": "On site", "zh": "现场指南" },
+      "title": { "ko": "머천다이즈", "en": "Merch", "zh": "周边商品" },
+      "subtitle": { "ko": "", "en": "", "zh": "" },
+      "cover": "/assets/notion/merch-1.jpg",
+      "blocks": [
+        { "type": "info", "body": { "ko": "Soli Deo Gloria의 메시지가 담긴 특별한 머천다이즈는 업데이트될 예정입니다 :)", "en": "Special merch carrying the Soli Deo Gloria message is coming soon :)", "zh": "承载Soli Deo Gloria信息的特别周边商品即将更新 :)" } }
+      ]
+    },
+    "ads": {
+      "icon": "📢",
+      "eyebrow": { "ko": "현장 안내", "en": "On site", "zh": "现场指南" },
+      "title": { "ko": "전체 광고", "en": "Announcements", "zh": "全体公告" },
+      "subtitle": { "ko": "", "en": "", "zh": "" },
+      "cover": "/assets/notion/ads-1.jpg",
+      "blocks": [
+        { "type": "info", "body": { "ko": "업데이트될 예정입니다 :)", "en": "Coming soon :)", "zh": "即将更新 :)" } }
+      ]
+    },
+    "etiquette": {
+      "icon": "🙏",
+      "eyebrow": { "ko": "함께 지켜요", "en": "Etiquette & safety", "zh": "共同遵守" },
+      "title": { "ko": "예배자 에티켓", "en": "Worshiper Etiquette", "zh": "敬拜者礼仪" },
+      "subtitle": { "ko": "", "en": "", "zh": "" },
+      "cover": "/assets/notion/etiquette-1.jpg",
+      "blocks": [
+        { "type": "info", "body": { "ko": "함께 **예배자 에티켓**을 지키며 하나님의 임재를 경험하는 특별한 시간이 되길 기대합니다!", "en": "Let's keep this **worshiper etiquette** together and make this a special time of experiencing God's presence!", "zh": "让我们一同遵守**敬拜者礼仪**，期待在神的同在中度过特别的时光！" } },
+        { "type": "list", "items": [
+          { "ko": "각 구역별 입장 시간은 이 가이드북에서 확인합니다.", "en": "Check the entry time for your seating zone in this guidebook.", "zh": "各区域的入场时间请在本指南中查看。" },
+          { "ko": "메인홀 입장 시 팔찌 착용을 확인하고 있습니다. DAY별로 해당 일차에 맞는 팔찌를 착용합니다.", "en": "Wristbands are checked at the main hall entrance. Wear the wristband for that day.", "zh": "进入主会场时会检查手环，请佩戴当天对应的手环。" },
+          { "ko": "구역 내 좌석은 선착순으로 배정되며 안쪽부터 채워 앉아야 하므로, 스태프의 안내에 따라주시기 바랍니다.", "en": "Seats within each zone are first come, first served and fill from the inside out, so please follow the staff's directions.", "zh": "区域内座位先到先得，并需从内侧依次坐满，请听从工作人员的引导。" },
+          { "ko": "메인홀 퇴장 시 앉았던 자리를 깨끗하게 정리하고 두고 가는 물건이 없는지 확인해 주세요. 스태프의 안내에 따라 차례를 지키며 안전하게 퇴장해 주시기 바랍니다.", "en": "When leaving the main hall, tidy up your seat and check you haven't left anything behind. Follow the staff's directions and exit safely, in turn.", "zh": "离开主会场时，请清理好座位并确认没有遗留物品；请听从工作人员引导，依序安全离场。" },
+          { "ko": "메인홀 내부에는 물병만 반입할 수 있으며, 그 외 음식물과 음료는 반입이 금지됩니다.", "en": "Only water bottles may be brought into the main hall. All other food and drinks are not allowed.", "zh": "主会场内仅可携带饮用水，禁止携带其他食物和饮料。" },
+          { "ko": "휴대폰은 무음 모드로 해주시고, 예배에 방해되는 과도한 영상 촬영은 자제해 주시기 바랍니다.", "en": "Please put your phone on silent and avoid excessive filming that distracts from worship.", "zh": "请将手机调至静音，避免过度录像影响敬拜。" },
+          { "ko": "기타 문의사항은 이 가이드북 또는 안내 스태프에게 문의해 주시기 바랍니다.", "en": "For anything else, check this guidebook or ask any staff member.", "zh": "其他问题请查阅本指南或咨询现场工作人员。" }
+        ] }
+      ]
+    },
+    "safety": {
+      "icon": "🛟",
+      "eyebrow": { "ko": "함께 지켜요", "en": "Etiquette & safety", "zh": "共同遵守" },
+      "title": { "ko": "안전수칙", "en": "Safety Guidelines", "zh": "安全守则" },
+      "subtitle": { "ko": "", "en": "", "zh": "" },
+      "cover": "/assets/notion/safety-1.jpg",
+      "blocks": [
+        { "type": "heading", "text": { "ko": "기본 안전 수칙", "en": "Basic safety", "zh": "基本安全守则" } },
+        { "type": "list", "items": [
+          { "ko": "감기나 발열 등 의심 증상이 있는 참가자는 **사전에 코로나 자가진단을 실시**하고, 이상이 있을 경우 참석을 자제합니다.", "en": "If you have a cold, fever or other symptoms, **take a COVID-19 self-test beforehand** and stay home if anything seems wrong.", "zh": "如有感冒、发烧等疑似症状，请**提前进行新冠自测**，如有异常请勿参加。" },
+          { "ko": "참가자는 **개인 상비약(진통제, 소화제 등)** 및 **개인 복용약**을 반드시 지참합니다. (별도의 구급약품은 제공되지 않습니다.)", "en": "Be sure to bring **your own basic medicine (pain relievers, digestive aids, etc.)** and **any medication you take**. (No first-aid medicine is provided.)", "zh": "请务必自备**常用药（止痛药、消化药等）**及**个人服用的药物**。（现场不另外提供急救药品。）" },
+          { "ko": "현장에 **구급차가 상시 대기**합니다. 응급상황이 발생할 경우 **신속히 구급차로 이송**하여 조치를 받도록 합니다.", "en": "**An ambulance is on standby at all times.** In an emergency, the person will be **taken by ambulance right away** for treatment.", "zh": "现场**有救护车随时待命**。如遇紧急情况，将**迅速由救护车转送**接受处置。" },
+          { "ko": "현장에서 응급 상황이 발생하면 **즉시 스태프에게 알리고 안내에 따라 이동**합니다.", "en": "If an emergency happens on site, **tell a staff member immediately and follow their directions**.", "zh": "现场发生紧急情况时，请**立即告知工作人员并按指引行动**。" }
+        ] },
+        { "type": "heading", "text": { "ko": "화재 발생 시 대피요령", "en": "In case of fire", "zh": "火灾时的疏散要领" } },
+        { "type": "list", "items": [
+          { "ko": "불을 처음 발견한 사람은 **큰 소리로 주위 사람들에게 알립니다.**", "en": "Whoever spots the fire first **shouts to warn people nearby.**", "zh": "最先发现火情的人要**大声通知周围的人。**" },
+          { "ko": "**비상벨**을 누르고 침착하게 **119에 화재를 신고**합니다.", "en": "Press the **fire alarm** and calmly **call 119** to report the fire.", "zh": "按下**火警警铃**，冷静地**拨打119报警**。" },
+          { "ko": "**비상구를 이용하여 대피**합니다.", "en": "**Evacuate through the emergency exits.**", "zh": "**通过紧急出口疏散。**" },
+          { "ko": "대피할 때는 **젖은 수건 등으로 입과 코를 막고 낮은 자세로 신속하게 대피**합니다.", "en": "As you leave, **cover your mouth and nose with a wet towel or cloth and stay low as you move out quickly.**", "zh": "疏散时，**用湿毛巾等捂住口鼻，压低身体迅速撤离。**" },
+          { "ko": "**엘리베이터는 절대 이용하지 않습니다.**", "en": "**Never use the elevators.**", "zh": "**切勿乘坐电梯。**" }
+        ] },
+        { "type": "heading", "text": { "ko": "태풍·지진·홍수 등 자연재해 발생 시 행동요령", "en": "In a typhoon, earthquake, flood or other natural disaster", "zh": "台风、地震、洪水等自然灾害时的应对要领" } },
+        { "type": "list", "items": [
+          { "ko": "실내에서는 **기상속보와 진행본부의 안내 방송 및 지시사항**에 귀를 기울입니다.", "en": "Indoors, **listen for weather alerts and announcements and instructions from the event HQ.**", "zh": "在室内时，请**留意天气快讯以及大会指挥部的广播和指示。**" },
+          { "ko": "번개나 낙뢰가 칠 때는 **우산을 쓰지 말고 낮은 지대나 안전한 건물로 신속히 대피**하며, **물이 가득 찬 도로나 길을 피해 안전한 길**로 걷습니다.", "en": "During lightning, **don't use an umbrella; move quickly to low ground or a safe building**, and **walk on safe routes, avoiding flooded roads.**", "zh": "打雷闪电时，**不要打伞，迅速躲到低处或安全的建筑物内**，并**避开积水的道路，走安全的路线。**" },
+          { "ko": "지진이 발생하면 **먼저 몸을 안전하게 보호한 뒤 신속히 안전한 곳으로 대피**합니다.", "en": "In an earthquake, **first protect yourself, then move quickly to a safe place.**", "zh": "发生地震时，**先保护好自己，再迅速撤离到安全的地方。**" }
+        ] }
+      ]
+    },
+    "support": {
+      "icon": "💌",
+      "eyebrow": { "ko": "후원", "en": "Support", "zh": "支持事工" },
+      "title": { "ko": "후원 안내", "en": "Support the Ministry", "zh": "支持事工" },
+      "subtitle": { "ko": "Fundraising", "en": "Fundraising", "zh": "Fundraising" },
+      "blocks": [
+        { "type": "text", "body": {
+          "ko": "아이자야씩스티원 예배 사역은 한국 교회 다음세대 리더들을 세우고 함께 예배하기 위한 목적으로 시작되었습니다.\n\n이 시대의 청소년, 청년들이 건강한 리더로 세워지는 일에 마음과 후원으로 동참하실 모든 분들을 초청합니다!\n\n여러분의 따뜻한 관심과 기도가 다음세대에게 큰 격려가 될 것입니다.",
+          "en": "Isaiah6tyOne's worship ministry began to raise up next-generation leaders for the Korean church and to worship together with them.\n\nWe invite everyone who wants to join, with their hearts and their giving, in helping today's teens and young adults grow into healthy leaders!\n\nYour warm interest and prayers will be a great encouragement to the next generation.",
+          "zh": "Isaiah6tyOne敬拜事工的起初，是为了建立韩国教会下一代的领袖，并与他们一同敬拜。\n\n诚邀所有愿意以心意和奉献参与的人，一同帮助这个时代的青少年和青年成长为健康的领袖！\n\n您温暖的关注与代祷，将成为下一代极大的鼓励。"
+        } },
+        { "type": "links", "items": [
+          { "label": { "ko": "💌 해피나눔으로 후원하기", "en": "💌 Give online via Happy Nanum", "zh": "💌 通过Happy Nanum在线奉献" }, "href": "https://www.ihappynanum.com/Nanum/B/455PWO0QH3" }
+        ] },
+        { "type": "copy", "label": { "ko": "후원계좌 · 국민은행 (아이자야씩스티원 미니스트리)", "en": "Bank account · KB Kookmin Bank (Isaiah6tyOne Ministry)", "zh": "奉献账户 · 国民银行 KB（Isaiah6tyOne Ministry）" }, "value": "253401-04-380570" },
+        { "type": "text", "body": { "ko": "후원 관련 문의: 📩 i6tyone@gmail.com", "en": "Questions about giving: 📩 i6tyone@gmail.com", "zh": "奉献相关咨询：📩 i6tyone@gmail.com" } }
+      ]
+    }
   },
   "footer": {
-    "contact": { "ko": "궁금하신 부분은 편하게 연락주세요 :)", "en": "Questions? Feel free to reach out :)", "zh": "如有疑问，欢迎随时联系 :)" },
-    "links": [ { "label": "KAKAO", "href": "https://pf.kakao.com/" } ],
+    "contact": { "ko": "궁금하신 부분은 편하게 연락주세요 :)\n카카오톡 채널 @아이자야씩스티원컨퍼런스", "en": "Questions? Feel free to reach out :)\nKakao channel @아이자야씩스티원컨퍼런스", "zh": "如有疑问，欢迎随时联系 :)\nKakaoTalk频道 @아이자야씩스티원컨퍼런스" },
+    "links": [
+      { "label": "KAKAO", "href": "https://pf.kakao.com/_ViePG" },
+      { "label": "INSTAGRAM", "href": "https://www.instagram.com/isaiah6tyone/" }
+    ],
     "email": "i6tyone.conf@gmail.com"
   }
 }
