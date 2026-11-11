@@ -328,7 +328,6 @@ async function showEditor() {
 
 const LOGIN_ERRORS = {
   401: '비밀번호가 틀렸습니다.',
-  429: '로그인 시도가 너무 많습니다. 잠시 후 다시 시도하세요.',
   503: '관리자 비밀번호가 설정되지 않았습니다. 서버에서 npm run set-password 를 실행하세요.',
 };
 

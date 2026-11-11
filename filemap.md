@@ -12,7 +12,7 @@
 - `public/assets/poster.jpg`: conference poster (hero image, font/palette source)
 - `data/`: `content.json` (committed); `admin.json` and `backups/` are gitignored
 - `server/index.js`: HTTP server (`createServer()`): static `public/`, SPA fallback, `/api/*` routes, security headers
-- `server/auth.js`: scrypt hash/verify, in-memory sessions, login rate limit (`createAuth()`)
+- `server/auth.js`: scrypt hash/verify, in-memory sessions, 12-char password minimum (`createAuth()`)
 - `server/store.js`: `DATA_DIR`, read/validate/atomic-write `content.json`, backups (newest 20)
 - `server/set-password.js`: `npm run set-password` prompt → `data/admin.json`
 - `public/`: guide frontend; `public/admin/` is the admin UI

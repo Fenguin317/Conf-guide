@@ -39,7 +39,7 @@ All of these are listed in `QUESTIONS.md`.
 ## Architecture
 ```
 server/index.js     HTTP server: static /public, GET /api/content, admin API
-server/auth.js      password hash/verify, sessions, login rate limit
+server/auth.js      password hash/verify, sessions
 server/store.js     read/validate/write content.json (atomic + backup)
 public/index.html   guide shell; app.js renders from /api/content
 public/app.js       router (#/ home, #/<slug> detail), i18n, block renderer
@@ -105,7 +105,7 @@ Unknown block types are skipped by the renderer and rejected by the server valid
   - Writes atomically (tmp + rename) and keeps the previous version in `data/backups/content-<ISO>.json` (last 20 kept).
   - Responds 400 with a message on invalid content.
 - **POST/PUT checks:** the `Origin` header must match `Host` when present, as CSRF defence in depth.
-- **Login rate limit:** 5 failures per IP per 10 minutes → 429.
+- **No login lockout:** failed logins only return 401, so nobody can lock the admin out (a per-IP lockout behind a proxy locks everyone). A password of at least 12 characters is the brute-force defense: `set-password` refuses shorter ones and the server refuses to start with a shorter `ADMIN_PASSWORD`.
 - **Password:** `npm run set-password` prompts and writes `data/admin.json`. Env `ADMIN_PASSWORD` is the alternative for hosting. With neither present, admin login is disabled and the server logs a hint.
 - **Static files:** no directory listing and no path traversal (resolved path must stay under `public/`). Unknown non-API paths serve `public/index.html`.
 
@@ -133,7 +133,7 @@ Unknown block types are skipped by the renderer and rejected by the server valid
 
 ## Definition of done (MVP)
 - `npm start` serves the guide.
-- `npm test` passes, covering auth hash/verify, session expiry, content validation, path traversal and the rate limit.
+- `npm test` passes, covering auth hash/verify, session expiry, content validation, path traversal, the 12-character password minimum and that failed logins never lock the admin out.
 - All 13 Notion sections exist as pages, in KO plus EN/ZH translations.
 - Both themes have been screenshotted at 1280px and 390px, plus the admin screens.
 - `docs/REPORT.pdf` exists.

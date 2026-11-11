@@ -21,12 +21,16 @@ test('hash/verify roundtrip and wrong password', async () => {
 
 test('sessions expire after 12h', async () => {
   let t = 1_000_000;
-  const auth = createAuth({ password: 'testpass123', now: () => t });
-  const { status, token } = await auth.login('1.2.3.4', 'testpass123');
+  const auth = createAuth({ password: 'testpass1234', now: () => t });
+  const { status, token } = await auth.login('testpass1234');
   assert.equal(status, 200);
   assert.equal(auth.check(token), true);
   t += 12 * 3600_000;
   assert.equal(auth.check(token), false);
+});
+
+test('ADMIN_PASSWORD shorter than 12 characters is rejected', () => {
+  assert.throws(() => createAuth({ password: 'short-pass1' }), /at least 12/);
 });
 
 test('validateContent accepts data/content.json', async () => {
@@ -67,7 +71,7 @@ test('HTTP integration', async (t) => {
   const dir = await mkdtemp(join(tmpdir(), 'i61-'));
   await cp(DATA, dir, { recursive: true });
   process.env.DATA_DIR = dir;
-  process.env.ADMIN_PASSWORD = 'testpass123';
+  process.env.ADMIN_PASSWORD = 'testpass1234';
   const server = createServer();
   await new Promise((r) => server.listen(0, '127.0.0.1', r));
   const { port } = server.address();
@@ -86,15 +90,16 @@ test('HTTP integration', async (t) => {
 
   assert.equal((await req('PUT', '/api/content', { body: content })).status, 401);
 
-  const ok = await req('POST', '/api/login', { body: { password: 'testpass123' } });
+  const ok = await req('POST', '/api/login', { body: { password: 'testpass1234' } });
   assert.equal(ok.status, 200);
   const cookie = ok.headers['set-cookie'][0];
   assert.match(cookie, /^sid=[0-9a-f]{64}; HttpOnly; SameSite=Strict; Path=\/; Max-Age=43200$/);
   const sid = cookie.split(';')[0];
   assert.equal((await req('GET', '/api/me', { headers: { Cookie: sid } })).status, 200);
 
-  for (let i = 1; i <= 5; i++) assert.equal((await req('POST', '/api/login', { body: { password: 'nope' } })).status, 401);
-  assert.equal((await req('POST', '/api/login', { body: { password: 'nope' } })).status, 429);
+  // no lockout: repeated failures must never block the real admin (ISSUE-002)
+  for (let i = 1; i <= 6; i++) assert.equal((await req('POST', '/api/login', { body: { password: 'nope' } })).status, 401);
+  assert.equal((await req('POST', '/api/login', { body: { password: 'testpass1234' } })).status, 200);
 
   const edited = structuredClone(content);
   edited.meta.updated = '2027-01-01';

@@ -7,8 +7,8 @@ import { dataDir } from './store.js';
 const scrypt = promisify(scryptCb);
 const N = 16384, R = 8, P = 1, KEYLEN = 32;
 const SESSION_TTL = 12 * 3600_000;
-const FAIL_WINDOW = 10 * 60_000;
-const MAX_FAILS = 5;
+// No login lockout (it let anyone lock the admin out behind a proxy), so a long password is the brute-force defense.
+export const MIN_PASSWORD = 12;
 
 export async function hashPassword(pw) {
   const salt = randomBytes(16);
@@ -28,9 +28,9 @@ export const adminFile = () => join(dataDir(), 'admin.json');
 
 // password: plaintext from env (hashed once, kept in memory); otherwise <data>/admin.json is read per login.
 export function createAuth({ password = process.env.ADMIN_PASSWORD, now = Date.now } = {}) {
+  if (password && password.length < MIN_PASSWORD) throw new Error(`ADMIN_PASSWORD must be at least ${MIN_PASSWORD} characters`);
   const envHash = password ? hashPassword(password) : null;
   const sessions = new Map(); // token -> expiry ms
-  const fails = new Map(); // ip -> [failure ms]
 
   async function getHash() {
     if (envHash) return envHash;
@@ -47,21 +47,13 @@ export function createAuth({ password = process.env.ADMIN_PASSWORD, now = Date.n
       return envHash ? 'ADMIN_PASSWORD env' : (await getHash()) ? adminFile() : null;
     },
 
-    // -> { status: 200, token } | { status: 401 | 429 | 503 }
-    async login(ip, pw) {
+    // -> { status: 200, token } | { status: 401 | 503 }
+    async login(pw) {
       const hash = await getHash();
       if (!hash) return { status: 503 };
-      const t = now();
-      const recent = (fails.get(ip) || []).filter((x) => t - x < FAIL_WINDOW);
-      if (recent.length >= MAX_FAILS) return { status: 429 };
-      // count the attempt before the slow verify so parallel guesses can't slip past the limit
-      recent.push(t);
-      fails.set(ip, recent);
       if (typeof pw !== 'string' || !(await verifyPassword(pw, hash))) return { status: 401 };
-      recent.splice(recent.indexOf(t), 1);
-      if (!recent.length) fails.delete(ip);
       const token = randomBytes(32).toString('hex');
-      sessions.set(token, t + SESSION_TTL);
+      sessions.set(token, now() + SESSION_TTL);
       return { status: 200, token };
     },
 

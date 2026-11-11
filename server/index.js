@@ -71,9 +71,8 @@ async function handleApi(req, res, path, auth) {
 
   if (route === 'POST /api/login') {
     const body = await readJson(req);
-    const r = await auth.login(req.socket.remoteAddress, body?.password);
+    const r = await auth.login(body?.password);
     if (r.status === 503) return sendJson(res, 503, { error: 'admin password not set; run npm run set-password' });
-    if (r.status === 429) return sendJson(res, 429, { error: 'too many failed logins; try again later' });
     if (r.status === 401) return sendJson(res, 401, { error: 'wrong password' });
     const secure = req.socket.encrypted || req.headers['x-forwarded-proto']?.split(',')[0].trim() === 'https';
     const cookie = `sid=${r.token}; HttpOnly; SameSite=Strict; Path=/; Max-Age=43200${secure ? '; Secure' : ''}`;

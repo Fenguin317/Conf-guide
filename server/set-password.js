@@ -1,6 +1,6 @@
 import { mkdir, writeFile, chmod } from 'node:fs/promises';
 import { text } from 'node:stream/consumers';
-import { hashPassword, adminFile } from './auth.js';
+import { hashPassword, adminFile, MIN_PASSWORD } from './auth.js';
 import { dataDir } from './store.js';
 
 function askHidden(question) {
@@ -39,8 +39,8 @@ if (process.stdin.isTTY) {
 } else {
   pw = (await text(process.stdin)).split(/\r?\n/)[0];
 }
-if (pw.length < 8) {
-  console.error('Password must be at least 8 characters.');
+if (pw.length < MIN_PASSWORD) {
+  console.error(`Password must be at least ${MIN_PASSWORD} characters.`);
   process.exit(1);
 }
 
