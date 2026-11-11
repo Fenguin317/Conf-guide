@@ -6,13 +6,13 @@ Status values: `todo` / `doing` / `done (commit)`.
 
 | # | Task | Tier | After | Status |
 |---|------|------|-------|--------|
-| 1 | Scrape Notion content | medium | – | doing |
+| 1 | Scrape Notion content | medium | – | done (33d12fc) |
 | 2 | Server, auth, admin API | careful | – | done (df07c38) |
 | 3 | Guide frontend + theme A | medium | – | done (5280d41) |
-| 4 | Content JSON ko/en/zh | medium | 1 | todo |
+| 4 | Content JSON ko/en/zh | medium | 1 | done (5749be6) |
 | 5 | Admin editor UI | medium | 2 | done (5001977) |
 | 6 | Theme B apple-design | medium | 3 | done (see log) |
-| 7 | QA screenshots + report PDF | medium | 4,5,6 | todo |
+| 7 | QA screenshots + report PDF | medium | 4,5,6 | doing |
 
 ## Briefs
 
