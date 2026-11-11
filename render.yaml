@@ -1,0 +1,14 @@
+# Render Blueprint for dev testing on the free plan.
+# shortcut: free plan has no disk, so admin edits live in data/ only until the next spin-down/restart; move to a host with persistent storage (set DATA_DIR) before real use.
+services:
+  - type: web
+    name: isaiah61-guide
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: "24"
+      - key: ADMIN_PASSWORD
+        sync: false
