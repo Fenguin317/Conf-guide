@@ -5,7 +5,9 @@
 - `docs/SPEC.md`: goals, schema, API, definition of done
 - `docs/DESIGN.md`: markup contract and theme A/B specs
 - `docs/PLAN.md`: task list and status
+- `docs/REPORT.md`, `docs/REPORT.pdf`: progress report for the team (Korean)
 - `docs/reference/`: G2A/Notion reference screenshots and scraped Notion text (`notion/`)
+- `docs/screens/`: build-time screenshots; `docs/screens/qa/` is the final QA set used in the report
 - `public/assets/poster.jpg`: conference poster (hero image, font/palette source)
 - `data/`: `content.json` (committed); `admin.json` and `backups/` are gitignored
 - `server/index.js`: HTTP server (`createServer()`): static `public/`, SPA fallback, `/api/*` routes, security headers

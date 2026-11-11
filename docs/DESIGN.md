@@ -1,4 +1,4 @@
-# DESIGN — orchestrator decisions (workers implement, do not invent)
+# DESIGN — settled decisions (implement these, do not invent new UI)
 
 Both themes style the SAME markup emitted by `public/app.js`. Class names below are the contract.
 
