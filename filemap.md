@@ -13,4 +13,9 @@
 - `server/store.js`: `DATA_DIR`, read/validate/atomic-write `content.json`, backups (newest 20)
 - `server/set-password.js`: `npm run set-password` prompt → `data/admin.json`
 - `public/`: guide frontend; `public/admin/` is the admin UI
+- `public/index.html`: guide shell (fonts, base.css, `#theme` link, header/main/footer slots, aria-live region)
+- `public/base.css`: structural CSS shared by both themes (reset, font stacks, column, safe areas, a11y)
+- `public/app.js`: content fetch, theme/lang pick, hash router, renderer (markup contract), `UI` strings, copy
+- `public/theme-g2a.css`: design option A (G2A-style) colours and typography
+- `public/admin/`: admin UI (`index.html`, `admin.js` login + Form/JSON editor + save, `admin.css`)
 - `test/server.test.js`: auth, validator, and HTTP integration tests (`npm test`)
