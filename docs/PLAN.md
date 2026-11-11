@@ -11,7 +11,7 @@ Status values: `todo` / `doing` / `done (commit)`.
 | 3 | Guide frontend + theme A | medium | – | done (5280d41) |
 | 4 | Content JSON ko/en/zh | medium | 1 | todo |
 | 5 | Admin editor UI | medium | 2 | done (5001977) |
-| 6 | Theme B apple-design | medium | 3 | doing |
+| 6 | Theme B apple-design | medium | 3 | done (see log) |
 | 7 | QA screenshots + report PDF | medium | 4,5,6 | todo |
 
 ## Briefs
