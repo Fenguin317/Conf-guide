@@ -4,3 +4,4 @@ data/admin.json
 data/backups/
 .DS_Store
 *.log
+graphify-out/
