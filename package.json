@@ -1,0 +1,12 @@
+{
+  "name": "isaiah61-guide",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "start": "node server/index.js",
+    "test": "node --test test/",
+    "set-password": "node server/set-password.js"
+  }
+}

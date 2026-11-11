@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "updated": "2026-11-12",
+    "theme": "g2a",
+    "title": { "ko": "2027 아이자야 컨퍼런스 가이드북", "en": "2027 Isaiah Conference Guidebook", "zh": "2027 以赛亚大会指南" },
+    "subtitle": { "ko": "Soli Deo Gloria : 오직 하나님께 영광", "en": "Soli Deo Gloria : Glory to God Alone", "zh": "Soli Deo Gloria：唯独荣耀归于神" }
+  },
+  "event": {
+    "dates": { "ko": "2027. 01. 26 (화) – 01. 28 (목)", "en": "Jan 26 (Tue) – Jan 28 (Thu), 2027", "zh": "2027年1月26日（周二）– 1月28日（周四）" },
+    "venue": { "ko": "킨텍스 제2전시장 9홀", "en": "KINTEX Exhibition Center 2, Hall 9", "zh": "KINTEX 第二展馆 9号厅" },
+    "address": { "ko": "경기도 고양시 일산서구 킨텍스로 217-59", "en": "217-59 Kintex-ro, Ilsanseo-gu, Goyang-si, Gyeonggi-do", "zh": "京畿道高阳市一山西区KINTEX路217-59" },
+    "theme": { "ko": "Soli Deo Gloria : 하나님께 영광", "en": "Soli Deo Gloria : Glory to God", "zh": "Soli Deo Gloria：荣耀归于神" },
+    "verse": { "ko": "나라와 권세와 영광이 아버지께 영원히 있사옵나이다 아멘 (마태복음 6:13)", "en": "For yours is the kingdom and the power and the glory forever. Amen. (Matthew 6:13)", "zh": "因为国度、权柄、荣耀全是你的，直到永远。阿们。（马太福音 6:13）" },
+    "days": [
+      { "label": "Day 1", "title": { "ko": "나의 삶을 통한 하나님께 영광", "en": "Through My Life", "zh": "借着我的生命荣耀神" } },
+      { "label": "Day 2", "title": { "ko": "교회를 통한 하나님께 영광", "en": "Through the Church", "zh": "借着教会荣耀神" } },
+      { "label": "Day 3", "title": { "ko": "민족을 통한 하나님께 영광", "en": "Through Our Nation", "zh": "借着民族荣耀神" } }
+    ],
+    "poster": "/assets/poster.jpg",
+    "cta": [
+      { "label": { "ko": "스케줄표 보기", "en": "View schedule", "zh": "查看日程" }, "href": "#/schedule", "style": "primary" },
+      { "label": { "ko": "오시는 길", "en": "Getting here", "zh": "交通指南" }, "href": "#/directions", "style": "outline" }
+    ]
+  },
+  "notice": { "title": { "ko": "공지", "en": "Notice", "zh": "公告" }, "body": { "ko": "컨퍼런스 전까지 계속 업데이트됩니다. 일행분들께도 링크를 공유해 주세요.", "en": "This guide is updated until the conference. Please share the link with your group.", "zh": "本指南将持续更新至大会开始。请与同行者分享链接。" } },
+  "quick": [
+    { "page": "schedule", "icon": "🗓️" },
+    { "page": "directions", "icon": "🚗" },
+    { "page": "faq", "icon": "❓" },
+    { "page": "lineup", "icon": "🎤" }
+  ],
+  "remember": { "title": { "ko": "꼭 기억하세요", "en": "Remember", "zh": "请记住" }, "items": [
+    { "ko": "입장 시 QR 코드를 준비해 주세요.", "en": "Have your QR code ready at entry.", "zh": "入场时请准备好二维码。" }
+  ] },
+  "sections": [
+    { "id": "getting-here", "title": { "ko": "오시는 길", "en": "Getting here", "zh": "交通" }, "badge": { "ko": "먼저 확인", "en": "Start here", "zh": "先看这里" }, "pages": ["directions"] },
+    { "id": "main", "title": { "ko": "메인", "en": "Main", "zh": "主要" }, "pages": ["schedule", "lineup", "faq"] }
+  ],
+  "pages": {
+    "directions": { "icon": "🚗", "eyebrow": { "ko": "오시는 길", "en": "Getting here", "zh": "交通" }, "title": { "ko": "오시는 길 & 주차", "en": "Directions & Parking", "zh": "交通与停车" }, "subtitle": { "ko": "킨텍스 제2전시장 9홀", "en": "KINTEX Hall 2, Hall 9", "zh": "KINTEX 第二展馆 9号厅" }, "blocks": [
+      { "type": "info", "title": { "ko": "주소", "en": "Address", "zh": "地址" }, "body": { "ko": "경기도 고양시 일산서구 킨텍스로 217-59", "en": "217-59 Kintex-ro, Ilsanseo-gu, Goyang-si, Gyeonggi-do", "zh": "京畿道高阳市一山西区KINTEX路217-59" } },
+      { "type": "copy", "label": { "ko": "주소 복사", "en": "Copy address", "zh": "复制地址" }, "value": "경기도 고양시 일산서구 킨텍스로 217-59" }
+    ] },
+    "schedule": { "icon": "🗓️", "eyebrow": { "ko": "메인", "en": "Main", "zh": "主要" }, "title": { "ko": "스케줄표", "en": "Schedule", "zh": "日程表" }, "subtitle": { "ko": "3일간의 일정", "en": "Three days at a glance", "zh": "三天日程一览" }, "blocks": [
+      { "type": "table", "head": [ { "ko": "시간", "en": "Time", "zh": "时间" }, { "ko": "프로그램", "en": "Program", "zh": "节目" } ], "rows": [
+        [ { "ko": "10:00", "en": "10:00", "zh": "10:00" }, { "ko": "등록", "en": "Registration", "zh": "报到" } ]
+      ] }
+    ] },
+    "lineup": { "icon": "🎤", "eyebrow": { "ko": "메인", "en": "Main", "zh": "主要" }, "title": { "ko": "라인업", "en": "Line-up", "zh": "讲员与敬拜团" }, "subtitle": { "ko": "", "en": "", "zh": "" }, "blocks": [
+      { "type": "people", "items": [ { "name": { "ko": "존 비비어", "en": "John Bevere", "zh": "约翰·毕维尔" }, "role": { "ko": "주강사", "en": "Speaker", "zh": "讲员" } } ] }
+    ] },
+    "faq": { "icon": "❓", "eyebrow": { "ko": "메인", "en": "Main", "zh": "主要" }, "title": { "ko": "자주 하는 질문", "en": "FAQ", "zh": "常见问题" }, "subtitle": { "ko": "", "en": "", "zh": "" }, "blocks": [
+      { "type": "accordion", "items": [ { "q": { "ko": "주차가 가능한가요?", "en": "Is parking available?", "zh": "可以停车吗？" }, "a": { "ko": "킨텍스 주차장을 이용할 수 있습니다.", "en": "Yes, use the KINTEX parking lots.", "zh": "可以使用KINTEX停车场。" } } ] }
+    ] }
+  },
+  "footer": {
+    "contact": { "ko": "궁금하신 부분은 편하게 연락주세요 :)", "en": "Questions? Feel free to reach out :)", "zh": "如有疑问，欢迎随时联系 :)" },
+    "links": [ { "label": "KAKAO", "href": "https://pf.kakao.com/" } ],
+    "email": "i6tyone.conf@gmail.com"
+  }
+}
