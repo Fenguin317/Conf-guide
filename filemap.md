@@ -1,5 +1,6 @@
 # filemap
 
+- `README.md`: one-line repo description (from the GitHub repo's initial commit)
 - `CLAUDE.md`: commands and rules for agents
 - `QUESTIONS.md`: decisions (Q1–Q9)
 - `render.yaml`: Render Blueprint (free plan, dev testing only)
