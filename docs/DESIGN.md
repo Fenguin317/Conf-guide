@@ -6,7 +6,7 @@ Both themes style the SAME markup emitted by `public/app.js`. Class names below 
 
 ### Shared
 - `header.top`
-  - contains `a.brand` (text "ISAIAH 6TYONE" in display serif, short "I61" under 360px)
+  - contains `a.brand` wrapping `img` `/assets/logo.png` (white logo, alt "ISAIAH 6TYONE", 24px tall; inverted on the apple theme's light bar)
   - contains `.lang` with 3 `button[aria-pressed]`: KO, EN, 中
 - `main#app`, which holds one of the two views below
 - `footer.foot`

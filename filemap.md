@@ -11,6 +11,7 @@
 - `docs/reference/`: G2A/Notion reference screenshots and scraped Notion text (`notion/`)
 - `docs/screens/`: build-time screenshots; `docs/screens/qa/` is the final QA set used in the report
 - `public/assets/poster.jpg`: conference poster (hero image, font/palette source)
+- `public/assets/logo.png`: header logo (white on transparent, 480×97, resized from the ministry's 2017 logo PNG)
 - `data/`: `content.json` (committed); `admin.json` and `backups/` are gitignored
 - `server/index.js`: HTTP server (`createServer()`): static `public/`, SPA fallback, `/api/*` routes, security headers
 - `server/auth.js`: scrypt hash/verify, in-memory sessions, 12-char password minimum (`createAuth()`)

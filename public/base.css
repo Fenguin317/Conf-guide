@@ -38,12 +38,8 @@ code { font: inherit; }
   padding-right: max(16px, env(safe-area-inset-right));
 }
 
-/* Brand: short form under 360px */
-.brand span + span { display: none; }
-@media (max-width: 359px) {
-  .brand span:first-child { display: none; }
-  .brand span + span { display: inline; }
-}
+/* Brand: white logo image; fits 320px next to the language group */
+.brand img { display: block; height: 24px; width: auto; }
 
 .lang { display: flex; }
 .lang button { position: relative; min-width: 44px; min-height: 36px; }

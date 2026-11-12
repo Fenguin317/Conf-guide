@@ -58,7 +58,7 @@ data/admin.json     scrypt password hash (gitignored, created by `npm run set-pa
 
 ```jsonc
 {
-  "meta": { "updated": "2026-11-12", "theme": "g2a", "title": L, "subtitle": L },
+  "meta": { "updated": "2026-11-12", "theme": "apple", "title": L, "subtitle": L },
   "event": {
     "dates": L, "venue": L, "address": L, "theme": L, "verse": L,
     "days": [ { "label": "Day 1", "title": L } ],

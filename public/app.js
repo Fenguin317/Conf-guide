@@ -24,7 +24,7 @@ function pickLang() {
 let lang = pickLang();
 
 function setTheme(name) {
-  const apple = name === 'apple';
+  const apple = name !== 'g2a';
   document.getElementById('theme').href = `/theme-${apple ? 'apple' : 'g2a'}.css`;
   document.querySelector('meta[name=theme-color]').content = !apple ? '#1a0f0b' : matchMedia('(prefers-color-scheme: dark)').matches ? '#000' : '#f5f5f7';
 }
@@ -46,7 +46,7 @@ const hasPage = (slug) => /^[a-z0-9-]+$/.test(slug) && Object.hasOwn(C.pages || 
 const back = () => `<a class="back" href="#/"><span aria-hidden="true">←</span>&nbsp;${UI[lang].back}</a>`;
 
 function header() {
-  $top.innerHTML = `<a class="brand" href="#/" aria-label="${BRAND}"><span aria-hidden="true">${BRAND}</span><span aria-hidden="true">I61</span></a>
+  $top.innerHTML = `<a class="brand" href="#/"><img src="/assets/logo.png" alt="${BRAND}" width="480" height="97"></a>
 <div class="lang" role="group" aria-label="Language">${LANGS.map(([k, l]) => `<button type="button" lang="${k}" data-lang="${k}" aria-pressed="${k === lang}">${l}</button>`).join('')}</div>`;
 }
 
