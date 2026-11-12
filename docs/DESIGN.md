@@ -42,7 +42,7 @@ Both themes style the SAME markup emitted by `public/app.js`. Class names below 
   - `figure.b-image`
   - `.b-copy`: `code` + `button.copy`
   - `ul.b-links` with `a.row`
-  - `.b-people` with `.person`: `img`, `b`, `span`
+  - `.b-people` with `.person`: `img` (square crop, top-aligned so faces show), `b`, `span`
 - a second `a.back` at the bottom
 
 ## Option A: G2A-style (`theme-g2a.css`)
@@ -112,7 +112,7 @@ Both themes style the SAME markup emitted by `public/app.js`. Class names below 
 - **Motion:** subtle 200ms ease on press (scale .98). Disabled under reduced motion.
 
 ## Both options
-- Display serif only for Latin display text: brand, kicker, hero title when the language is `en`, and day labels.
+- Display serif only for Latin display text: kicker and day labels. Hero titles use the body font in every language for legibility.
 - KO/ZH titles use Pretendard 800, because Playfair has no Hangul/CJK glyphs and the fallback would look mixed.
 - `html[lang=zh]` puts the CJK font stack first.
 - Long words wrap (`overflow-wrap: anywhere` on table cells and row text).
