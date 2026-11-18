@@ -24,7 +24,8 @@
   <header class="bar">
     <h1>가이드 관리자 <span id="dirty" class="dot" role="img" aria-label="저장되지 않은 변경 사항" title="저장되지 않은 변경 사항" hidden></span></h1>
     <div class="tabs" role="tablist">
-      <button type="button" role="tab" id="tab-form" aria-controls="form" aria-selected="true">Form</button>
+      <button type="button" role="tab" id="tab-visual" aria-controls="visual" aria-selected="true">페이지</button>
+      <button type="button" role="tab" id="tab-form" aria-controls="form" aria-selected="false">Form</button>
       <button type="button" role="tab" id="tab-json" aria-controls="json" aria-selected="false">JSON</button>
     </div>
     <div class="actions">
@@ -43,8 +44,24 @@
     <ul id="errors-list"></ul>
   </div>
 
+  <section id="visual" class="visual" role="tabpanel" aria-labelledby="tab-visual">
+    <div class="visual-tools">
+      <label>페이지 <select id="visual-page"></select></label>
+      <select id="visual-add" aria-label="블록 추가"></select>
+      <button type="button" id="visual-settings">페이지 설정</button>
+      <span class="hint">점선 글자를 눌러 바로 고치세요. 블록에 마우스를 올리면 이동·삭제·세부 편집 막대가 나옵니다. 고친 내용은 지금 보이는 언어(KO/EN/中)에 들어가고, 저장을 눌러야 반영됩니다. 굵은 글씨(**)가 든 글과 링크·이미지 경로는 '세부 편집'에서 고칩니다.</span>
+    </div>
+    <div class="visual-body">
+      <iframe id="visual-frame" title="페이지 편집 화면"></iframe>
+      <aside id="drawer" class="drawer" aria-labelledby="drawer-title" hidden>
+        <div class="errors-head"><h2 id="drawer-title"></h2><button type="button" id="drawer-close">닫기</button></div>
+        <div id="drawer-body"></div>
+      </aside>
+    </div>
+  </section>
+
   <main class="content">
-    <section id="form" role="tabpanel" aria-labelledby="tab-form"></section>
+    <section id="form" role="tabpanel" aria-labelledby="tab-form" hidden></section>
     <section id="json" role="tabpanel" aria-labelledby="tab-json" hidden>
       <div class="json-tools">
         <button type="button" id="json-check">검증</button>

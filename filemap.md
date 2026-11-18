@@ -15,6 +15,7 @@
 - `data/`: `content.json` (committed); `admin.json` and `backups/` are gitignored
 - `server/index.js`: HTTP server (`createServer()`): static `public/`, SPA fallback, `/api/*` routes, security headers, frame-ancestors (`FRAME_ANCESTORS`)
 - `server/auth.js`: scrypt hash/verify, in-memory sessions, 12-char password minimum (`createAuth()`)
+- `public/admin/edit-mode.css`: styles for the visual editor; `public/app.js` loads it only in edit mode (`/?edit` inside the /admin iframe)
 - `server/store.js`: `DATA_DIR`, read/validate/atomic-write `content.json`; GitHub mode (commit per save, history, restore) or local backups (newest 20); version check for concurrent saves
 - `server/set-password.js`: `npm run set-password` prompt → `data/admin.json`
 - `public/`: guide frontend; `public/admin/` is the admin UI

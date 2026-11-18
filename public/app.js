@@ -13,6 +13,13 @@ const $top = document.querySelector('.top');
 const $foot = document.querySelector('.foot');
 const $live = document.getElementById('live');
 let C = null;
+// Visual edit mode: only when /admin embeds this page as /?edit (admin.js drives it over postMessage).
+const EDIT = qs.has('edit') && window.parent !== window;
+let paths = new Map(); // localized object -> its JSON path, so an edited element maps back to content
+let ids = [];          // render-time id -> localized object
+let fallback = new Set();
+const END = '\uE002';
+const MARK = /[\uE002\uE100-\uF8FF]/g;
 
 function pickLang() {
   const ok = (l) => UI[l] ? l : null;
@@ -30,12 +37,19 @@ function setTheme(name) {
 }
 if (qs.get('theme')) setTheme(qs.get('theme'));
 
-// Localized string (or plain string) → text in the current language
-const t = (L) => typeof L === 'string' ? L : (L && (L[lang] || L.ko)) || '';
+// Localized string (or plain string) → text in the current language.
+// In edit mode the text is wrapped in private-use marker chars that annotate() turns into editable elements.
+const t = (L) => {
+  const s = typeof L === 'string' ? L : (L && (L[lang] || L.ko)) || '';
+  if (!EDIT || !s || !paths.has(L)) return s;
+  const id = ids.push(L) - 1;
+  if (!L[lang]) fallback.add(id);
+  return String.fromCharCode(0xE100 + id) + s + END;
+};
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const fmt = (s) => esc(s)
   .replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')
-  .replace(/https?:\/\/[^\s<]*[^\s<.,;:!?)]/g, (u) => `<a href="${u}" target="_blank" rel="noopener">${u}</a>`)
+  .replace(/https?:\/\/[^\s<\uE000-\uF8FF]*[^\s<.,;:!?)\uE000-\uF8FF]/g, (u) => `<a href="${u}" target="_blank" rel="noopener">${u}</a>`)
   .replace(/\n/g, '<br>');
 // Admin-editable URLs: allow only http(s), mailto, tel, hash and site paths
 const url = (u) => esc(/^(https?:|mailto:|tel:|#|\/)/i.test(u || '') ? u : '#');
@@ -102,7 +116,7 @@ ${back()}
 <h1 class="page-title">${fmt(t(p.title))}</h1>
 ${t(p.subtitle) ? `<p class="page-sub">${fmt(t(p.subtitle))}</p>` : ''}
 ${p.cover ? img(p.cover, t(p.title), 'page-cover') : ''}
-${(p.blocks || []).map((b) => BLOCKS[b.type]?.(b) || '').join('\n')}
+${(p.blocks || []).map((b, i) => (EDIT ? `<!--b${i}-->` : '') + (BLOCKS[b.type]?.(b) || '')).join('\n')}
 ${back()}
 </div>`;
 }
@@ -116,10 +130,13 @@ function render() {
 }
 
 function renderAll() {
+  ids = [];
+  fallback = new Set();
   document.documentElement.lang = lang;
   header();
   footer();
   render();
+  if (EDIT) annotate();
 }
 
 async function copy(btn) {
@@ -143,7 +160,7 @@ async function copy(btn) {
 document.addEventListener('click', (ev) => {
   const btn = ev.target.closest('button');
   if (!btn) return;
-  if (btn.matches('.copy')) copy(btn);
+  if (btn.matches('.copy')) { if (!EDIT) copy(btn); }
   else if (btn.dataset.lang && btn.dataset.lang !== lang) {
     lang = btn.dataset.lang;
     try { localStorage.setItem('lang', lang); } catch {}
@@ -152,9 +169,148 @@ document.addEventListener('click', (ev) => {
     $top.querySelector(`[data-lang="${lang}"]`).focus();
   }
 });
-addEventListener('hashchange', () => { if (C) { render(); scrollTo(0, 0); } });
+addEventListener('hashchange', () => {
+  if (!C) return;
+  EDIT ? renderAll() : render();
+  scrollTo(0, 0);
+  if (EDIT) post({ type: 'nav', hash: location.hash });
+});
 
-fetch('/api/content')
+/* ---------- visual edit mode ---------- */
+
+const post = (msg) => window.parent.postMessage(msg, location.origin);
+
+function indexPaths(v, p = []) {
+  if (!v || typeof v !== 'object') return;
+  if (!Array.isArray(v) && typeof v.ko === 'string') return void paths.set(v, p);
+  for (const [k, x] of Object.entries(v)) indexPaths(x, [...p, Array.isArray(v) ? Number(k) : k]);
+}
+
+// Turn marker-wrapped text into editable elements, tag page blocks with data-block, then strip the markers.
+function annotate() {
+  const roots = [$top, $app, $foot];
+  for (const root of roots) {
+    const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    for (let n; (n = w.nextNode());) {
+      for (const ch of n.data) {
+        const id = ch.charCodeAt(0) - 0xE100;
+        // shortcut: content that itself holds U+E100–U+F8FF chars gets them stripped in edit mode; use another marker scheme if that ever matters
+        if (id < 0 || !ids[id]) continue;
+        // the owner is the nearest element whose whole text is exactly this one marked string
+        for (let e = n.parentElement; e && root.contains(e); e = e.parentElement) {
+          const tc = e.textContent.trim();
+          if (!tc.includes(END, tc.indexOf(ch))) continue;
+          const L = ids[id];
+          if (tc[0] === ch && tc.indexOf(END) === tc.length - 1 && !/\*\*.+?\*\*/.test(L[lang] || L.ko)) {
+            e.dataset.edit = id;
+            try { e.contentEditable = 'plaintext-only'; } catch { e.contentEditable = 'true'; }
+            e.spellcheck = false;
+            if (fallback.has(id)) e.title = `${lang.toUpperCase()} 번역 없음: 한국어를 보여 주는 중이며, 고치면 ${lang.toUpperCase()} 칸에 저장됩니다`;
+          }
+          break;
+        }
+      }
+    }
+    const strip = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    for (let n; (n = strip.nextNode());) n.data = n.data.replace(MARK, '');
+    for (const e of root.querySelectorAll('*')) for (const a of e.attributes) a.value = a.value.replace(MARK, '');
+  }
+  document.title = document.title.replace(MARK, '');
+  for (const d of $app.querySelectorAll('details')) d.open = true;
+  let block = -1;
+  for (const n of $app.querySelector('.view-page')?.childNodes ?? []) {
+    if (n.nodeType === Node.COMMENT_NODE && /^b\d+$/.test(n.data)) block = Number(n.data.slice(1));
+    else if (n.nodeType === Node.ELEMENT_NODE && block >= 0 && !n.matches('.back')) n.dataset.block = block;
+  }
+}
+
+if (EDIT) {
+  document.head.insertAdjacentHTML('beforeend', '<link rel="stylesheet" href="/admin/edit-mode.css">');
+  const slug = () => location.hash.replace(/^#\/?/, '');
+  const bar = document.createElement('div');
+  bar.className = 'edit-bar';
+  bar.hidden = true;
+  bar.innerHTML = '<button type="button" draggable="true" data-op="drag" aria-label="끌어서 이동" title="끌어서 이동">⠿</button><button type="button" data-op="up" aria-label="위로">↑</button><button type="button" data-op="down" aria-label="아래로">↓</button><button type="button" data-op="edit">세부 편집</button><button type="button" data-op="delete" class="danger">삭제</button>';
+  const line = Object.assign(document.createElement('div'), { className: 'edit-drop', hidden: true });
+  document.body.append(bar, line);
+  let current = -1, dragging = -1, dropAt = -1;
+  const blockEls = (i) => [...$app.querySelectorAll(`[data-block="${i}"]`)];
+  const showBar = (i) => {
+    $app.querySelectorAll('.edit-hover').forEach((e) => e.classList.remove('edit-hover'));
+    const els = blockEls(i);
+    if (!els.length) { bar.hidden = true; current = -1; return; }
+    current = i;
+    els.forEach((e) => e.classList.add('edit-hover'));
+    const r = els[0].getBoundingClientRect();
+    bar.style.top = `${Math.max(0, r.top + scrollY - 40)}px`;
+    bar.style.left = `${r.left + scrollX}px`;
+    bar.hidden = false;
+  };
+  const blockAt = (target) => target.closest?.('[data-block]');
+  document.addEventListener('mouseover', (ev) => { const b = blockAt(ev.target); if (b && Number(b.dataset.block) !== current) showBar(Number(b.dataset.block)); });
+  document.addEventListener('focusin', (ev) => { const b = blockAt(ev.target); if (b) showBar(Number(b.dataset.block)); });
+  bar.addEventListener('click', (ev) => {
+    const op = ev.target.closest('button')?.dataset.op;
+    if (!op || op === 'drag' || current < 0) return;
+    const i = current;
+    // keep the bar on the block being moved, not on the slot it left
+    if (op === 'up' && i > 0) current = i - 1;
+    else if (op === 'down' && blockEls(i + 1).length) current = i + 1;
+    else if (op === 'delete') current = -1;
+    post({ type: 'block', op, slug: slug(), i });
+  });
+  bar.addEventListener('dragstart', (ev) => { dragging = current; ev.dataTransfer.effectAllowed = 'move'; ev.dataTransfer.setData('text/plain', String(current)); });
+  document.addEventListener('dragover', (ev) => {
+    if (dragging < 0) return;
+    const b = blockAt(ev.target);
+    if (!b) return;
+    ev.preventDefault();
+    const i = Number(b.dataset.block), els = blockEls(i);
+    const top = els[0].getBoundingClientRect().top, bottom = els.at(-1).getBoundingClientRect().bottom;
+    const after = ev.clientY > (top + bottom) / 2;
+    dropAt = after ? i + 1 : i;
+    const r = (after ? els.at(-1) : els[0]).getBoundingClientRect();
+    Object.assign(line.style, { top: `${(after ? r.bottom : r.top) + scrollY - 2}px`, left: `${r.left + scrollX}px`, width: `${r.width}px` });
+    line.hidden = false;
+  });
+  document.addEventListener('drop', (ev) => {
+    if (dragging < 0) return;
+    ev.preventDefault();
+    if (dropAt >= 0 && dropAt !== dragging && dropAt !== dragging + 1) {
+      current = dropAt > dragging ? dropAt - 1 : dropAt;
+      post({ type: 'block', op: 'move', slug: slug(), i: dragging, to: dropAt });
+    }
+  });
+  document.addEventListener('dragend', () => { dragging = dropAt = -1; line.hidden = true; });
+  // links stay inert while editing, except in-guide navigation clicked outside editable text
+  document.addEventListener('click', (ev) => {
+    const a = ev.target.closest('a');
+    if (ev.target.closest('[data-edit]') || ev.target.closest('summary') || (a && !a.getAttribute('href')?.startsWith('#/'))) ev.preventDefault();
+  }, true);
+  document.addEventListener('input', (ev) => {
+    const e = ev.target.closest?.('[data-edit]');
+    if (!e) return;
+    const L = ids[e.dataset.edit];
+    const value = e.innerText.replace(/\u00A0/g, ' ').replace(/\n$/, '');
+    L[lang] = value;
+    e.removeAttribute('title');
+    post({ type: 'text', path: paths.get(L), lang, value });
+  });
+  addEventListener('message', (ev) => {
+    if (ev.source !== window.parent || ev.origin !== location.origin || ev.data?.type !== 'content') return;
+    const moved = ev.data.hash !== undefined && ev.data.hash !== location.hash;
+    C = ev.data.content;
+    paths = new Map();
+    indexPaths(C);
+    setTheme(qs.get('theme') || C.meta?.theme);
+    if (moved) history.replaceState(null, '', ev.data.hash || '#/');
+    const y = scrollY;
+    renderAll();
+    scrollTo(0, moved ? 0 : y);
+    if (current >= 0) showBar(current); else bar.hidden = true;
+  });
+  post({ type: 'ready' });
+} else fetch('/api/content')
   .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
   .then((c) => {
     C = c;

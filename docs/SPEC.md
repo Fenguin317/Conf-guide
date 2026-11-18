@@ -123,6 +123,7 @@ Unknown block types are skipped by the renderer and rejected by the server valid
 3. **Admin:**
    - Log in at `/admin`.
    - The editor offers:
+     - A **페이지** (visual) tab, the default: the real page in an iframe (`/?edit`, driven by postMessage). Text whose whole element is one localized string is edited in place (`contenteditable`) in the shown language; text with `**bold**` and non-text fields (links, image paths, icons) go through the side panel. Page blocks get a hover bar: drag, ↑↓, 세부 편집 (side panel with the Form fields), 삭제. A toolbar picks the page, adds a block and opens page settings. Edits stay a draft until Save.
      - A **Form** tab: a generic recursive editor. Each `L` object shows as three labelled textareas KO/EN/中文. Arrays support add, delete and move ↑↓, and add clones the last item with emptied strings. Pages can be added and deleted.
      - A **JSON** tab: raw JSON with a validate button.
    - Save → `PUT`, with a success or error toast.

@@ -1,0 +1,23 @@
+/* Loaded by app.js only in visual edit mode (the page inside /admin). */
+/* innerText is read back as the stored value, so it must show the raw text: no theme uppercase, no space collapsing */
+[data-edit] { text-transform: none !important; white-space: pre-wrap !important; }
+[data-edit] { outline: 1px dashed rgb(224 97 27 / .45); outline-offset: 2px; border-radius: 2px; cursor: text; }
+[data-edit]:hover { outline-color: #e0611b; background: rgb(224 97 27 / .06); }
+[data-edit]:focus { outline: 2px solid #e0611b; background: rgb(224 97 27 / .08); }
+[data-edit][title] { outline-style: dotted; outline-color: #8a8a8a; }
+[data-block].edit-hover { box-shadow: 0 0 0 2px rgb(224 97 27 / .35); border-radius: 6px; }
+
+.edit-bar {
+  position: absolute; z-index: 1000; display: flex; gap: 4px; padding: 4px;
+  background: #1f1f1f; border-radius: 8px; box-shadow: 0 4px 16px rgb(0 0 0 / .25);
+  font: 13px/1 "Pretendard Variable", Pretendard, system-ui, sans-serif;
+}
+.edit-bar[hidden], .edit-drop[hidden] { display: none; }
+.edit-bar button {
+  min-width: 32px; min-height: 32px; padding: 0 8px; border: 0; border-radius: 6px;
+  background: #3a3a3a; color: #fff; font: inherit; cursor: pointer;
+}
+.edit-bar button:hover, .edit-bar button:focus-visible { background: #e0611b; color: #1a0f0b; }
+.edit-bar button[data-op="drag"] { cursor: grab; }
+.edit-bar .danger { color: #ffb4a8; }
+.edit-drop { position: absolute; z-index: 999; height: 4px; background: #e0611b; border-radius: 2px; pointer-events: none; }

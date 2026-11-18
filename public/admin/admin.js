@@ -33,7 +33,7 @@ const TEMPLATES = {
 let data = null;
 let version = null; // ETag of the content `data` was loaded from; saves are refused if the server moved on
 let dirty = false;
-let tab = 'form';
+let tab = 'visual';
 const openPaths = new Set(['meta']);
 // Blank item shape per array (paths normalised to `*`), so an emptied array can still "+ 추가".
 const shapes = new Map();
@@ -70,6 +70,7 @@ const growAll = (root) => root.querySelectorAll('.lfield textarea').forEach(grow
 function markDirty() {
   dirty = true;
   $('#dirty').hidden = false;
+  if (tab === 'visual' && !fromFrame) queuePreview();
 }
 function setClean() {
   dirty = false;
@@ -120,7 +121,7 @@ function details(path, title, body, className) {
 
 function changed() {
   markDirty();
-  renderForm();
+  render();
 }
 
 function node(parent, key, path, sk) {
@@ -280,7 +281,7 @@ function showTab(t) {
   if (t === tab) return;
   if (tab === 'json' && !syncFromJson()) return;
   tab = t;
-  for (const x of ['form', 'json']) {
+  for (const x of ['visual', 'form', 'json']) {
     $(`#${x}`).hidden = x !== t;
     $(`#tab-${x}`).setAttribute('aria-selected', String(x === t));
   }
@@ -291,8 +292,102 @@ function render() {
   if (tab === 'json') {
     $('#json-text').value = JSON.stringify(data, null, 2);
     jsonStatus('', false);
-  } else renderForm();
+  } else if (tab === 'visual') renderVisual();
+  else renderForm();
 }
+
+/* ---------- visual tab: the real page in edit mode (public/app.js ?edit) ---------- */
+
+const frame = () => $('#visual-frame');
+let slug = '';          // page shown in the frame; '' = home
+let drawer = null;      // { slug, i } for a block, { slug } for page settings
+let fromFrame = false;  // edits typed in the frame are already on screen there
+let previewTimer;
+
+function postContent() {
+  frame().contentWindow?.postMessage({ type: 'content', content: data, hash: `#/${slug}` }, location.origin);
+}
+function queuePreview() {
+  clearTimeout(previewTimer);
+  previewTimer = setTimeout(postContent, 200);
+}
+
+function renderVisual() {
+  const pages = isObj(data.pages) ? data.pages : {};
+  if (slug && !Object.hasOwn(pages, slug)) slug = '';
+  if (drawer && (!Object.hasOwn(pages, drawer.slug) || (drawer.i != null && !pages[drawer.slug].blocks?.[drawer.i]))) drawer = null;
+  const sel = $('#visual-page');
+  sel.replaceChildren(el('option', { value: '' }, '홈'), ...Object.keys(pages).map((s) => el('option', { value: s }, `${s} — ${pages[s]?.title?.ko ?? ''}`)));
+  sel.value = slug;
+  $('#visual-add').disabled = $('#visual-settings').disabled = !slug;
+  if (!frame().src) frame().src = '/?edit=1'; // the frame says 'ready' once loaded, then gets content
+  else postContent();
+  renderDrawer();
+}
+
+function renderDrawer() {
+  $('#drawer').hidden = !drawer;
+  if (!drawer) return;
+  const page = data.pages[drawer.slug];
+  if (drawer.i == null) {
+    $('#drawer-title').textContent = `페이지 설정 · ${drawer.slug}`;
+    const path = `pages.${drawer.slug}`;
+    $('#drawer-body').replaceChildren(el('div', { className: 'obj' },
+      ...Object.keys(page).filter((k) => k !== 'blocks').map((k) => node(page, k, `${path}.${k}`, `pages.*.${k}`))),
+    btn('페이지 삭제', () => deletePage(drawer.slug), { className: 'danger' }));
+  } else {
+    const b = page.blocks[drawer.i];
+    $('#drawer-title').textContent = `블록 ${drawer.i + 1} · ${TYPE_LABELS[b.type] ?? b.type}`;
+    $('#drawer-body').replaceChildren(node(page.blocks, drawer.i, `pages.${drawer.slug}.blocks.${drawer.i}`, 'pages.*.blocks.*'));
+  }
+  growAll($('#drawer-body'));
+}
+
+function openDrawer(d) {
+  drawer = d;
+  renderDrawer();
+  $('#drawer').querySelector('textarea, input, select')?.focus();
+}
+
+function onFrameMessage(ev) {
+  if (ev.source !== frame().contentWindow || ev.origin !== location.origin || !data) return;
+  const m = ev.data ?? {};
+  if (m.type === 'ready') return postContent();
+  if (m.type === 'nav') {
+    slug = String(m.hash ?? '').replace(/^#\/?/, '');
+    drawer = null;
+    return renderVisual();
+  }
+  if (m.type === 'text') {
+    let o = data;
+    for (const k of Array.isArray(m.path) ? m.path : []) o = o?.[k];
+    if (!isL(o) || !LANGS.some(([l]) => l === m.lang) || typeof m.value !== 'string') return;
+    o[m.lang] = m.value;
+    fromFrame = true;
+    markDirty();
+    fromFrame = false;
+    if (drawer) renderDrawer();
+    return;
+  }
+  if (m.type !== 'block') return;
+  const blocks = data.pages?.[m.slug]?.blocks;
+  const i = m.i;
+  if (!Array.isArray(blocks) || !Number.isInteger(i) || !blocks[i]) return;
+  if (m.op === 'edit') return openDrawer({ slug: m.slug, i });
+  if (m.op === 'delete') {
+    if (!confirm(`블록 ${i + 1} (${TYPE_LABELS[blocks[i].type] ?? blocks[i].type})을 삭제할까요?`)) return;
+    blocks.splice(i, 1);
+    drawer = null;
+  } else {
+    const to = m.op === 'up' ? i - 1 : m.op === 'down' ? i + 2 : m.to;
+    if (!Number.isInteger(to) || to < 0 || to > blocks.length) return;
+    const [b] = blocks.splice(i, 1);
+    blocks.splice(to > i ? to - 1 : to, 0, b);
+    drawer = null;
+  }
+  changed();
+}
+addEventListener('message', onFrameMessage);
 
 /* ---------- API / session ---------- */
 
@@ -452,6 +547,20 @@ async function restore(h, when) {
 
 $('#login-form').addEventListener('submit', login);
 $('#tab-form').addEventListener('click', () => showTab('form'));
+$('#tab-visual').addEventListener('click', () => showTab('visual'));
+$('#visual-page').addEventListener('change', (e) => { slug = e.target.value; drawer = null; renderVisual(); });
+$('#visual-add').replaceChildren(el('option', { value: '' }, '+ 블록 추가…'), ...BLOCK_TYPES.map((t) => el('option', { value: t }, `${t} · ${TYPE_LABELS[t]}`)));
+$('#visual-add').addEventListener('change', (e) => {
+  const type = e.target.value;
+  e.target.value = '';
+  const blocks = data.pages?.[slug]?.blocks;
+  if (!type || !Array.isArray(blocks)) return;
+  blocks.push(TEMPLATES[type]());
+  drawer = { slug, i: blocks.length - 1 };
+  changed();
+});
+$('#visual-settings').addEventListener('click', () => openDrawer({ slug }));
+$('#drawer-close').addEventListener('click', () => { drawer = null; renderDrawer(); });
 $('#tab-json').addEventListener('click', () => showTab('json'));
 $('#save').addEventListener('click', save);
 $('#logout').addEventListener('click', logout);
