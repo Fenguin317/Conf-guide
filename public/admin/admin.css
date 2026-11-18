@@ -111,3 +111,13 @@ details.page > summary { padding: 8px 10px; }
   .bar h1 { flex-basis: 100%; }
   .content { padding: 12px; }
 }
+
+/* history */
+.history { width: min(640px, calc(100vw - 32px)); max-height: 80vh; border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+.history::backdrop { background: rgb(0 0 0 / .35); }
+.history h2 { margin: 0; font-size: 17px; }
+.history ul { list-style: none; margin: 12px 0 0; padding: 0; }
+.history li { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 0; border-top: 1px solid var(--line); }
+.history .h-msg { color: var(--muted); font-size: 13px; word-break: break-word; }
+.history .h-actions { display: flex; gap: 6px; }
+.history .bad { color: var(--danger); }

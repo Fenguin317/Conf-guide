@@ -1,5 +1,5 @@
 # Render Blueprint for dev testing on the free plan.
-# shortcut: free plan has no disk, so admin edits live in data/ only until the next spin-down/restart; move to a host with persistent storage (set DATA_DIR) before real use.
+# Free plan has no disk: with GITHUB_TOKEN + GITHUB_REPO set, admin saves are commits and the server pulls them at startup, so they survive spin-down.
 services:
   - type: web
     name: isaiah61-guide
@@ -11,4 +11,12 @@ services:
       - key: NODE_VERSION
         value: "24"
       - key: ADMIN_PASSWORD
+        sync: false
+      # admin saves commit data/content.json here; token: fine-grained, Contents read/write on this repo only
+      - key: GITHUB_REPO
+        value: Fenguin317/Conf-guide
+      - key: GITHUB_TOKEN
+        sync: false
+      # applicant portal origin(s) allowed to iframe the guide, e.g. "https://portal.example.com https://dev.portal.example.com"
+      - key: FRAME_ANCESTORS
         sync: false

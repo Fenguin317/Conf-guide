@@ -29,6 +29,7 @@
     </div>
     <div class="actions">
       <a class="btn" href="/" target="_blank" rel="noopener">미리보기</a>
+      <button type="button" id="history-open">이력</button>
       <button type="button" id="save" class="primary">저장</button>
       <button type="button" id="logout">로그아웃</button>
     </div>
@@ -36,7 +37,7 @@
 
   <div id="errors" class="errors" role="alert" hidden>
     <div class="errors-head">
-      <strong>저장 실패: 아래 항목을 고쳐 주세요</strong>
+      <strong id="errors-title">저장 실패: 아래 항목을 고쳐 주세요</strong>
       <button type="button" id="errors-close">닫기</button>
     </div>
     <ul id="errors-list"></ul>
@@ -53,6 +54,14 @@
     </section>
   </main>
 </div>
+
+<dialog id="history" class="history" aria-labelledby="history-title">
+  <div class="errors-head">
+    <h2 id="history-title">저장 이력</h2>
+    <button type="button" id="history-close">닫기</button>
+  </div>
+  <ul id="history-list"></ul>
+</dialog>
 
 <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 </body>

@@ -96,14 +96,20 @@ The `slug` key must match `[a-z0-9-]+`.
 Unknown block types are skipped by the renderer and rejected by the server validator.
 
 ## API
-- `GET /api/content`: content.json.
+- `GET /api/content`: content.json (public; in GitHub mode the local cache).
+- `GET /api/admin/content`: auth. Latest content (fresh from GitHub in GitHub mode) with `ETag` = its version.
 - `POST /api/login {password}`: sets cookie `sid`. The cookie is HttpOnly, SameSite=Strict, Path=/, Max-Age 12h, and Secure when the request is HTTPS.
 - `POST /api/logout`
 - `GET /api/me`: 200 or 401.
 - `PUT /api/content`: auth required.
-  - Request: the full JSON body, max 2 MB.
-  - Writes atomically (tmp + rename) and keeps the previous version in `data/backups/content-<ISO>.json` (last 20 kept).
+  - Request: the full JSON body, max 2 MB, and `If-Match: <ETag from GET /api/admin/content>` (428 without it).
+  - 412 when someone saved since that ETag (no lost updates); 502 when GitHub refuses or is unreachable (nothing changed).
+  - **GitHub mode** (`GITHUB_TOKEN` + `GITHUB_REPO`, optional `GITHUB_BRANCH`=main): commits `data/content.json` with `[skip render]`, then updates the local cache. Git history is the backup. The server pulls the GitHub copy at startup.
+  - **Local mode:** writes atomically (tmp + rename) and keeps the previous version in `data/backups/content-<ISO>.json` (last 20 kept).
   - Responds 400 with a message on invalid content.
+- `GET /api/history`: auth. Newest first `[{id, date, message, url?}]` (GitHub: last 30 commits of content.json; local: backups).
+- `POST /api/restore {id}`: auth + `If-Match`. Validates the old version and saves it as a new version, so the pre-restore state stays in history. Takes effect on the public site at once.
+- **Framing:** public pages send `Content-Security-Policy: frame-ancestors 'self' $FRAME_ANCESTORS` (space/comma-separated origins, no wildcards). `/admin` and `/api` send `X-Frame-Options: DENY` + `frame-ancestors 'none'`.
 - **POST/PUT checks:** the `Origin` header must match `Host` when present, as CSRF defence in depth.
 - **No login lockout:** failed logins only return 401, so nobody can lock the admin out (a per-IP lockout behind a proxy locks everyone). A password of at least 12 characters is the brute-force defense: `set-password` refuses shorter ones and the server refuses to start with a shorter `ADMIN_PASSWORD`.
 - **Password:** `npm run set-password` prompts and writes `data/admin.json`. Env `ADMIN_PASSWORD` is the alternative for hosting. With neither present, admin login is disabled and the server logs a hint.

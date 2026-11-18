@@ -13,9 +13,9 @@
 - `public/assets/poster.jpg`: conference poster (hero image, font/palette source)
 - `public/assets/logo.png`: header logo (white on transparent, 480×97, resized from the ministry's 2017 logo PNG)
 - `data/`: `content.json` (committed); `admin.json` and `backups/` are gitignored
-- `server/index.js`: HTTP server (`createServer()`): static `public/`, SPA fallback, `/api/*` routes, security headers
+- `server/index.js`: HTTP server (`createServer()`): static `public/`, SPA fallback, `/api/*` routes, security headers, frame-ancestors (`FRAME_ANCESTORS`)
 - `server/auth.js`: scrypt hash/verify, in-memory sessions, 12-char password minimum (`createAuth()`)
-- `server/store.js`: `DATA_DIR`, read/validate/atomic-write `content.json`, backups (newest 20)
+- `server/store.js`: `DATA_DIR`, read/validate/atomic-write `content.json`; GitHub mode (commit per save, history, restore) or local backups (newest 20); version check for concurrent saves
 - `server/set-password.js`: `npm run set-password` prompt → `data/admin.json`
 - `public/`: guide frontend; `public/admin/` is the admin UI
 - `public/index.html`: guide shell (fonts, base.css, `#theme` link, header/main/footer slots, aria-live region)

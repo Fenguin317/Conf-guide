@@ -31,6 +31,7 @@ const TEMPLATES = {
 };
 
 let data = null;
+let version = null; // ETag of the content `data` was loaded from; saves are refused if the server moved on
 let dirty = false;
 let tab = 'form';
 const openPaths = new Set(['meta']);
@@ -295,14 +296,14 @@ function render() {
 
 /* ---------- API / session ---------- */
 
-async function api(method, url, body) {
+async function api(method, url, body, headers = {}) {
   const r = await fetch(url, {
     method,
     credentials: 'same-origin',
-    headers: body ? { 'Content-Type': 'application/json' } : {},
+    headers: { ...(body ? { 'Content-Type': 'application/json' } : {}), ...headers },
     body: body ? JSON.stringify(body) : undefined,
   });
-  return { status: r.status, json: await r.json().catch(() => ({})) };
+  return { status: r.status, etag: r.headers.get('ETag'), json: await r.json().catch(() => ({})) };
 }
 
 function showLogin(message = '') {
@@ -315,9 +316,10 @@ function showLogin(message = '') {
 
 async function showEditor() {
   if (!data) {
-    const r = await api('GET', '/api/content');
-    if (r.status !== 200) return showLogin(`콘텐츠를 불러오지 못했습니다 (${r.status})`);
+    const r = await api('GET', '/api/admin/content');
+    if (r.status !== 200) return showLogin(`콘텐츠를 불러오지 못했습니다 (${r.status}${r.json.error ? `: ${r.json.error}` : ''})`);
     data = r.json;
+    version = r.etag;
     scanShapes();
     setClean();
   }
@@ -361,7 +363,8 @@ function toast(text) {
   toastTimer = setTimeout(() => { t.hidden = true; }, 2500);
 }
 
-function showErrors(list) {
+function showErrors(list, title = '저장 실패: 아래 항목을 고쳐 주세요') {
+  $('#errors-title').textContent = title;
   $('#errors-list').replaceChildren(...list.map((m) => el('li', {}, m)));
   $('#errors').hidden = false;
   $('#errors').scrollIntoView({ block: 'nearest' });
@@ -374,8 +377,9 @@ async function save() {
   const button = $('#save');
   button.disabled = true;
   try {
-    const r = await api('PUT', '/api/content', body);
+    const r = await api('PUT', '/api/content', body, { 'If-Match': version });
     if (r.status === 200) {
+      version = r.etag;
       if (isObj(data.meta)) data.meta.updated = today;
       $('#errors').hidden = true;
       setClean();
@@ -385,14 +389,63 @@ async function save() {
       showErrors(r.json.errors ?? [r.json.error ?? '잘못된 내용']);
     } else if (r.status === 401) {
       showLogin('세션이 만료되었습니다. 다시 로그인한 뒤 저장하세요. 편집 내용은 그대로 남아 있습니다.');
+    } else if (r.status === 412 || r.status === 428) {
+      conflict();
     } else {
-      toast(`저장 실패 (${r.status}${r.json.error ? `: ${r.json.error}` : ''})`);
+      showErrors([`${r.status}${r.json.error ? `: ${r.json.error}` : ''}`], '저장 실패: 서버에 저장되지 않았습니다');
     }
   } catch {
-    toast('저장 실패: 서버에 연결할 수 없습니다');
+    showErrors(['서버에 연결할 수 없습니다'], '저장 실패: 서버에 저장되지 않았습니다');
   } finally {
     button.disabled = false;
   }
+}
+
+function conflict() {
+  showErrors(['다른 관리자가 먼저 저장해서 내 변경 사항을 저장하지 않았습니다. 덮어쓰지 않도록 막은 것입니다.',
+    '필요하면 JSON 탭에서 지금 편집한 내용을 복사해 두고, 최신 내용을 다시 불러온 뒤 다시 적용하세요.'], '저장 충돌');
+  if (confirm('다른 관리자가 먼저 저장했습니다.\n최신 내용을 다시 불러올까요? (지금 편집한 내용은 사라집니다)\n\n취소하면 편집 화면이 그대로 남습니다.')) reload();
+}
+
+async function reload() {
+  data = null;
+  $('#errors').hidden = true;
+  await showEditor();
+}
+
+/* ---------- history / restore ---------- */
+
+async function openHistory() {
+  const list = $('#history-list');
+  list.replaceChildren(el('li', {}, '불러오는 중…'));
+  $('#history').showModal();
+  const r = await api('GET', '/api/history').catch(() => ({ status: 0, json: {} }));
+  if (r.status !== 200) return list.replaceChildren(el('li', { className: 'bad' }, `이력을 불러오지 못했습니다 (${r.status}${r.json.error ? `: ${r.json.error}` : ''})`));
+  if (!r.json.length) return list.replaceChildren(el('li', {}, '아직 저장 이력이 없습니다.'));
+  list.replaceChildren(...r.json.map((h, i) => {
+    const when = new Date(h.date).toLocaleString('ko-KR');
+    return el('li', {},
+      el('div', { className: 'h-meta' }, el('strong', {}, when), i === 0 && h.url ? ' (현재)' : '',
+        el('div', { className: 'h-msg' }, h.message || '')),
+      el('div', { className: 'h-actions' },
+        h.url ? el('a', { className: 'btn', href: h.url, target: '_blank', rel: 'noopener' }, 'GitHub에서 보기') : null,
+        btn('이 시점으로 복구', () => restore(h, when), { className: 'danger' })));
+  }));
+}
+
+async function restore(h, when) {
+  const warn = dirty ? '\n\n저장하지 않은 편집 내용은 사라집니다.' : '';
+  if (!confirm(`${when} 시점의 데이터로 복구할까요?\n운영 페이지에 바로 반영됩니다.\n지금 데이터는 이력에 남아 언제든 다시 복구할 수 있습니다.${warn}`)) return;
+  const r = await api('POST', '/api/restore', { id: h.id }, { 'If-Match': version }).catch(() => ({ status: 0, json: {} }));
+  if (r.status === 200) {
+    $('#history').close();
+    await reload();
+    return toast('복구됨: 운영 페이지에 반영되었습니다');
+  }
+  $('#history').close();
+  if (r.status === 412 || r.status === 428) return conflict();
+  if (r.status === 401) return showLogin('세션이 만료되었습니다. 다시 로그인하세요.');
+  showErrors(r.json.errors ?? [`${r.status}${r.json.error ? `: ${r.json.error}` : ''}`], '복구 실패: 데이터는 바뀌지 않았습니다');
 }
 
 /* ---------- wiring ---------- */
@@ -402,6 +455,8 @@ $('#tab-form').addEventListener('click', () => showTab('form'));
 $('#tab-json').addEventListener('click', () => showTab('json'));
 $('#save').addEventListener('click', save);
 $('#logout').addEventListener('click', logout);
+$('#history-open').addEventListener('click', openHistory);
+$('#history-close').addEventListener('click', () => $('#history').close());
 $('#errors-close').addEventListener('click', () => { $('#errors').hidden = true; });
 $('#json-text').addEventListener('input', markDirty);
 $('#json-check').addEventListener('click', () => { if (parseJsonTab()) jsonStatus('올바른 JSON입니다.', false); });

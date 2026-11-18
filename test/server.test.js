@@ -1,13 +1,14 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import http from 'node:http';
+import { createHash } from 'node:crypto';
 import { cp, mkdtemp, readdir, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { hashPassword, verifyPassword, createAuth } from '../server/auth.js';
-import { validateContent } from '../server/store.js';
-import { createServer } from '../server/index.js';
+import { summarizeChange, syncFromGitHub, validateContent } from '../server/store.js';
+import { createServer, frameAncestors } from '../server/index.js';
 
 const DATA = fileURLToPath(new URL('../data', import.meta.url));
 const loadContent = async () => JSON.parse(await readFile(join(DATA, 'content.json'), 'utf8'));
@@ -101,15 +102,42 @@ test('HTTP integration', async (t) => {
   for (let i = 1; i <= 6; i++) assert.equal((await req('POST', '/api/login', { body: { password: 'nope' } })).status, 401);
   assert.equal((await req('POST', '/api/login', { body: { password: 'testpass1234' } })).status, 200);
 
+  assert.equal((await req('GET', '/api/admin/content')).status, 401);
+  assert.equal((await req('GET', '/api/history')).status, 401);
+  assert.equal((await req('POST', '/api/restore', { body: { id: 'x' } })).status, 401);
+  const loaded = await req('GET', '/api/admin/content', { headers: { Cookie: sid } });
+  const v1 = loaded.headers.etag;
+  assert.match(v1, /^"[0-9a-f]+"$/);
+
   const edited = structuredClone(content);
   edited.meta.updated = '2027-01-01';
-  assert.equal((await req('PUT', '/api/content', { body: edited, headers: { Cookie: sid } })).status, 200);
+  assert.equal((await req('PUT', '/api/content', { body: edited, headers: { Cookie: sid } })).status, 428);
+  const saved = await req('PUT', '/api/content', { body: edited, headers: { Cookie: sid, 'If-Match': v1 } });
+  assert.equal(saved.status, 200);
+  assert.notEqual(saved.headers.etag, v1);
   assert.equal(JSON.parse(await readFile(join(dir, 'content.json'), 'utf8')).meta.updated, '2027-01-01');
   assert.ok((await readdir(join(dir, 'backups'))).some((f) => /^content-.*\.json$/.test(f)));
 
+  // a second admin still holding v1 must not overwrite the save above
+  const stale = structuredClone(content);
+  stale.meta.updated = '1999-01-01';
+  assert.equal((await req('PUT', '/api/content', { body: stale, headers: { Cookie: sid, 'If-Match': v1 } })).status, 412);
+  assert.equal(JSON.parse(await readFile(join(dir, 'content.json'), 'utf8')).meta.updated, '2027-01-01');
+
+  // history → restore the pre-save copy; the current copy becomes a new backup
+  const history = JSON.parse((await req('GET', '/api/history', { headers: { Cookie: sid } })).text);
+  assert.equal(history.length, 1);
+  assert.ok(!Number.isNaN(Date.parse(history[0].date)));
+  assert.equal((await req('POST', '/api/restore', { body: { id: '../content.json' }, headers: { Cookie: sid, 'If-Match': saved.headers.etag } })).status, 404);
+  assert.equal((await req('POST', '/api/restore', { body: { id: history[0].id }, headers: { Cookie: sid, 'If-Match': v1 } })).status, 412);
+  const restored = await req('POST', '/api/restore', { body: { id: history[0].id }, headers: { Cookie: sid, 'If-Match': saved.headers.etag } });
+  assert.equal(restored.status, 200);
+  assert.deepEqual(JSON.parse((await req('GET', '/api/content')).text), content);
+  assert.equal(JSON.parse((await req('GET', '/api/history', { headers: { Cookie: sid } })).text).length, 2);
+
   const bad = structuredClone(content);
   bad.pages.faq.blocks.push({ type: 'video' });
-  const badRes = await req('PUT', '/api/content', { body: bad, headers: { Cookie: sid } });
+  const badRes = await req('PUT', '/api/content', { body: bad, headers: { Cookie: sid, 'If-Match': restored.headers.etag } });
   assert.equal(badRes.status, 400);
   assert.ok(JSON.parse(badRes.text).errors.length > 0);
 
@@ -124,4 +152,125 @@ test('HTTP integration', async (t) => {
   const same = await req('GET', '/api/content', { headers: { Origin: `http://127.0.0.1:${port}` } });
   assert.equal(same.status, 200);
   assert.equal(same.headers['x-frame-options'], 'DENY');
+  assert.equal(same.headers['content-security-policy'], "frame-ancestors 'none'");
+});
+
+test('frame headers: public pages framable by allowed origins only, admin never', async (t) => {
+  process.env.FRAME_ANCESTORS = 'https://portal.example, *, https://dev.portal.example:8443';
+  const server = createServer({ auth: createAuth({ password: 'testpass1234' }) });
+  delete process.env.FRAME_ANCESTORS;
+  await new Promise((r) => server.listen(0, '127.0.0.1', r));
+  t.after(() => server.close());
+  const { port } = server.address();
+  for (const p of ['/', '/index.html', '/faq']) {
+    const r = await request(port, 'GET', p);
+    assert.equal(r.headers['x-frame-options'], undefined, p);
+    assert.equal(r.headers['content-security-policy'], "frame-ancestors 'self' https://portal.example https://dev.portal.example:8443", p);
+  }
+  for (const p of ['/admin', '/admin/', '/admin/index.html', '/%61dmin/', '/admin%2f', '/x/../admin/index.html', '/ADMIN/index.html', '/app.js', '/api/content']) {
+    const r = await request(port, 'GET', p);
+    assert.equal(r.headers['x-frame-options'], 'DENY', p);
+    assert.equal(r.headers['content-security-policy'], "frame-ancestors 'none'", p);
+  }
+  assert.equal(frameAncestors(''), "'self'");
+  assert.equal(frameAncestors('https://*.example javascript:x'), "'self'");
+});
+
+test('summarizeChange names changed keys and pages, ignores meta', () => {
+  const a = { meta: { updated: '1' }, event: { x: 1 }, pages: { faq: { t: 1 }, home: { t: 1 } } };
+  const b = { meta: { updated: '2' }, event: { x: 2 }, pages: { faq: { t: 2 }, home: { t: 1 }, new: {} } };
+  assert.equal(summarizeChange(a, b), 'event, pages.faq, pages.new');
+});
+
+// Minimal stand-in for the GitHub contents/commits API: one file, sha-checked writes.
+function fakeGitHub(initial) {
+  const commits = [];
+  const sha = (text) => createHash('sha1').update(text).digest('hex');
+  const commit = (text, message) => commits.unshift({ sha: sha(text + commits.length), blob: sha(text), text, message, date: new Date().toISOString() });
+  commit(initial, 'init');
+  const state = { fail: 0, puts: 0 };
+  const server = http.createServer((req, res) => {
+    let body = '';
+    req.on('data', (c) => { body += c; });
+    req.on('end', () => {
+      const send = (status, obj) => { res.writeHead(status, { 'Content-Type': 'application/json' }); res.end(JSON.stringify(obj)); };
+      if (req.headers.authorization !== 'Bearer tok') return send(401, { message: 'Bad credentials' });
+      if (state.fail) return send(state.fail, { message: 'boom' });
+      const u = new URL(req.url, 'http://x');
+      if (u.pathname !== '/repos/o/r/contents/data/content.json' && u.pathname !== '/repos/o/r/commits') return send(404, { message: 'Not Found' });
+      if (req.method === 'GET' && u.pathname.endsWith('/commits')) {
+        return send(200, commits.map((c) => ({ sha: c.sha, html_url: `https://github.com/o/r/commit/${c.sha}`, commit: { message: c.message, committer: { date: c.date } } })));
+      }
+      if (req.method === 'GET') {
+        const ref = u.searchParams.get('ref');
+        const c = ref === 'main' ? commits[0] : commits.find((x) => x.sha === ref);
+        if (!c) return send(404, { message: 'No commit found' });
+        return send(200, { sha: c.blob, content: Buffer.from(c.text).toString('base64') });
+      }
+      const b = JSON.parse(body);
+      if (b.sha !== commits[0].blob) return send(409, { message: 'is at x but expected y' });
+      state.puts++;
+      commit(Buffer.from(b.content, 'base64').toString('utf8'), b.message);
+      send(200, { content: { sha: commits[0].blob } });
+    });
+  });
+  return { server, commits, state };
+}
+
+test('GitHub storage: save, conflict, failure, history, restore', async (t) => {
+  const dir = await mkdtemp(join(tmpdir(), 'i61-gh-'));
+  await cp(DATA, dir, { recursive: true });
+  const content = await loadContent();
+  const remote = structuredClone(content);
+  remote.meta.updated = '2030-01-01'; // GitHub newer than the deployed file
+  const gh = fakeGitHub(JSON.stringify(remote, null, 2) + '\n');
+  await new Promise((r) => gh.server.listen(0, '127.0.0.1', r));
+  Object.assign(process.env, { DATA_DIR: dir, GITHUB_TOKEN: 'tok', GITHUB_REPO: 'o/r', GITHUB_API: `http://127.0.0.1:${gh.server.address().port}` });
+  const server = createServer({ auth: createAuth({ password: 'testpass1234' }) });
+  await new Promise((r) => server.listen(0, '127.0.0.1', r));
+  t.after(async () => {
+    server.close();
+    gh.server.close();
+    for (const k of ['DATA_DIR', 'GITHUB_TOKEN', 'GITHUB_REPO', 'GITHUB_API']) delete process.env[k];
+    await rm(dir, { recursive: true, force: true });
+  });
+  const { port } = server.address();
+  const req = (method, path, opts) => request(port, method, path, opts);
+  const cache = async () => JSON.parse(await readFile(join(dir, 'content.json'), 'utf8'));
+  const sid = (await req('POST', '/api/login', { body: { password: 'testpass1234' } })).headers['set-cookie'][0].split(';')[0];
+  const H = (etag) => ({ Cookie: sid, 'If-Match': etag });
+
+  await syncFromGitHub();
+  assert.equal((await cache()).meta.updated, '2030-01-01');
+
+  const v1 = (await req('GET', '/api/admin/content', { headers: { Cookie: sid } })).headers.etag;
+  const edited = structuredClone(remote);
+  edited.event.dates.ko = '바뀐 날짜';
+  const saved = await req('PUT', '/api/content', { body: edited, headers: H(v1) });
+  assert.equal(saved.status, 200);
+  assert.match(gh.commits[0].message, /^admin: 수정 \(event\) \[skip render\]$/);
+  assert.equal((await cache()).event.dates.ko, '바뀐 날짜');
+
+  assert.equal((await req('PUT', '/api/content', { body: remote, headers: H(v1) })).status, 412);
+  assert.equal(gh.state.puts, 1);
+
+  gh.state.fail = 500;
+  const failed = await req('PUT', '/api/content', { body: remote, headers: H(saved.headers.etag) });
+  gh.state.fail = 0;
+  assert.equal(failed.status, 502);
+  assert.equal((await cache()).event.dates.ko, '바뀐 날짜', 'failed GitHub write must not touch the cache');
+
+  const history = JSON.parse((await req('GET', '/api/history', { headers: { Cookie: sid } })).text);
+  assert.deepEqual(history.map((h) => h.message), ['admin: 수정 (event)', 'init']);
+  assert.equal((await req('POST', '/api/restore', { body: { id: 'not-a-sha' }, headers: H(saved.headers.etag) })).status, 404);
+  assert.equal((await req('POST', '/api/restore', { body: { id: 'f'.repeat(40) }, headers: H(saved.headers.etag) })).status, 404);
+  const restored = await req('POST', '/api/restore', { body: { id: history[1].id }, headers: H(saved.headers.etag) });
+  assert.equal(restored.status, 200);
+  assert.deepEqual(JSON.parse((await req('GET', '/api/content')).text), remote);
+  assert.equal(gh.commits.length, 3, 'restore is a new commit; the pre-restore version stays in history');
+
+  // repo set but token missing: saves must fail visibly, not silently land on a wiped disk
+  delete process.env.GITHUB_TOKEN;
+  assert.equal((await req('PUT', '/api/content', { body: remote, headers: H('x') })).status, 502);
+  assert.deepEqual(JSON.parse((await req('GET', '/api/content')).text), remote, 'public site still served');
 });

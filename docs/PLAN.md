@@ -20,6 +20,6 @@ Status values: `todo` / `doing` / `done (commit)`. Open decisions live in `QUEST
 
 **8 Report + PDF.** Fill `docs/REPORT.md` (per-commit progress, options chosen, screens, limits) and build `docs/REPORT.pdf` with `/make-pdf`.
 
-**9 Deploy.** Dev testing runs on Render's free plan (`render.yaml`, Q2). The free plan has no disk, so admin edits are lost on spin-down (after 15 idle minutes) or restart. Lasting content changes go into `data/content.json` and get pushed. Set `ADMIN_PASSWORD` as a secret env var. The production host must keep a disk, with `DATA_DIR` set to its path. A fresh disk has no `content.json`, so seed it from `data/content.json` on first start.
+**9 Deploy.** Dev testing runs on Render's free plan (`render.yaml`, Q2). The free plan has no disk, so set `GITHUB_TOKEN` (fine-grained, Contents read/write on this repo only) and `GITHUB_REPO`: admin saves then commit to GitHub and survive spin-down. Without them, admin edits are lost on spin-down (after 15 idle minutes) or restart. Pull before pushing code: admin saves add commits to `main`. Set `ADMIN_PASSWORD` as a secret env var. The production host must keep a disk, with `DATA_DIR` set to its path. A fresh disk has no `content.json`, so seed it from `data/content.json` on first start.
 
 Before handing off: `npm test` green, `/review` on the diff.
