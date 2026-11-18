@@ -21,3 +21,6 @@
 .edit-bar button[data-op="drag"] { cursor: grab; }
 .edit-bar .danger { color: #ffb4a8; }
 .edit-drop { position: absolute; z-index: 999; height: 4px; background: #e0611b; border-radius: 2px; pointer-events: none; }
+/* a new block starts with empty text and would collapse to 0 px, leaving nothing to hover */
+[data-block]:empty { min-height: 2.5em; border: 1px dashed #8a8a8a; border-radius: 6px; display: flex; align-items: center; justify-content: center; }
+[data-block]:empty::before { content: "빈 블록 · 마우스를 올리고 '세부 편집'으로 내용을 넣으세요"; color: #8a8a8a; font-size: 13px; }
