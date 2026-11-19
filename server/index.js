@@ -29,6 +29,8 @@ const SECURITY_HEADERS = {
 const ORIGIN_RE = /^https?:\/\/[a-z0-9.-]+(:\d+)?$/i;
 export function frameAncestors(env = process.env.FRAME_ANCESTORS || '') {
   const all = env.split(/[\s,]+/).filter(Boolean);
+  // FRAME_ANCESTORS=* (alone) opens the public shell to any embedder; /admin and /api stay unframable.
+  if (all.length === 1 && all[0] === '*') return '*';
   const bad = all.filter((o) => !ORIGIN_RE.test(o));
   if (bad.length) console.error(`FRAME_ANCESTORS: ignoring ${bad.join(' ')} (need scheme://host[:port], no wildcards)`);
   return ["'self'", ...all.filter((o) => ORIGIN_RE.test(o))].join(' ');

@@ -173,6 +173,7 @@ test('frame headers: public pages framable by allowed origins only, admin never'
     assert.equal(r.headers['content-security-policy'], "frame-ancestors 'none'", p);
   }
   assert.equal(frameAncestors(''), "'self'");
+  assert.equal(frameAncestors('*'), '*');
   assert.equal(frameAncestors('https://*.example javascript:x'), "'self'");
 });
 

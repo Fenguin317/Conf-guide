@@ -18,5 +18,6 @@ services:
       - key: GITHUB_TOKEN
         sync: false
       # applicant portal origin(s) allowed to iframe the guide, e.g. "https://portal.example.com https://dev.portal.example.com"
+      # TODO: 현재 전체 허용(*). 운영 도메인 확정 시 origin 목록으로 교체 (공백 구분)
       - key: FRAME_ANCESTORS
-        sync: false
+        value: "*"
